@@ -11,7 +11,7 @@ const twMerge = extendTailwindMerge<"text-style">({
           t: [
             "h1", "hero", "room", "h2", "h3", "h4", "stat",
             "body-lg", "body", "body-sm", "caption", "strong",
-            "btn", "btn-sm", "mono-label", "mono-sm", "code",
+            "btn", "btn-sm", "mono-label", "mono-sm", "mono-xs", "code", "code-m", "monogram",
             "m-display", "m-h2", "m-lead",
           ],
         },

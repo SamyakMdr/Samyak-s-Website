@@ -131,8 +131,8 @@
   --color-cover-pill: var(--cover-pill);
 
   --font-display: var(--font-space-grotesk), var(--font-noto-deva), system-ui, sans-serif;
-  --font-sans: var(--font-plex-sans), var(--font-noto-deva), system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-plex-sans), var(--font-plex-sans-arrows), var(--font-noto-deva), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), var(--font-plex-mono-symbols), ui-monospace, "SFMono-Regular", monospace;
   --font-deva: var(--font-noto-deva), sans-serif;
 
   --radius-*: initial;
@@ -152,6 +152,7 @@
   --shadow-readme: 0 16px 40px rgba(0, 0, 0, 0.3);
   --shadow-float: 0 8px 20px rgba(0, 0, 0, 0.25);
   --shadow-tooltip: 0 8px 20px rgba(0, 0, 0, 0.4);
+  --shadow-toast: 0 12px 30px rgba(0, 0, 0, 0.35);
   --shadow-glow-blue: 0 6px 28px rgba(59, 130, 246, 0.45);
   --shadow-glow-violet: 0 0 24px 2px rgba(139, 92, 246, 0.5);
   --shadow-glow-card: 0 0 24px 2px rgba(139, 92, 246, 0.35);
@@ -349,6 +350,16 @@
   letter-spacing: 0;
 }
 
+/* Local override in the mobile frames: terminals set Mono/Code at 12px on a
+   20px line. */
+@utility t-code-m {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
 @utility t-m-display {
   font-family: var(--font-display);
   font-weight: 700;
@@ -453,5 +464,240 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Small type that has no Figma text style: Kbd and graph years (Plex Mono 500
+   11px) and the logo-slot monogram (Space Grotesk 700 15px). */
+@utility t-mono-xs {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+@utility t-monogram {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+/* Theme-dependent visibility without waiting for hydration. */
+[data-theme="light"] .theme-dark-only,
+:root:not([data-theme="light"]) .theme-light-only {
+  display: none;
+}
+
+/* Description starts at the single-line box drawn in Figma and grows with the
+   message (see ContactForm) up to the 140px textarea in the component spec. */
+.field-grow {
+  min-height: 48px;
+  max-height: 140px;
+}
+
+@media (max-width: 767px) {
+  .field-grow {
+    max-height: 120px;
+  }
+}
+
+.glow {
+  right: calc(-56px - 763px);
+  width: 1526px;
+  height: 1011px;
+  border-radius: 50%;
+  opacity: var(--glow-opacity);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--violet) 42%, transparent) 0%,
+    color-mix(in srgb, var(--glow-pink) 16%, transparent) 45%,
+    color-mix(in srgb, var(--glow-pink) 0%, transparent) 100%
+  );
+  filter: blur(30px);
+}
+
+@media (max-width: 767px) {
+  .glow {
+    right: -260px;
+    width: 520px;
+    height: 520px;
+    filter: blur(25px);
+  }
+}
+
+/* 4px scrollbar: track --panel-2, thumb --dim (Shortcuts card, terminal log). */
+@utility thin-scroll {
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--panel-2);
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--dim);
+    border-radius: 2px;
+  }
+  /* Firefox has no pseudo-element; "thin" is the closest it offers. */
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--dim) var(--panel-2);
+  }
+}
+
+/* Feature card in the hero row: violet → blue gradient border and violet glow
+   on hover. The border is a masked pseudo-element so the radius stays crisp. */
+.card-highlight::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--violet), var(--blue));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity var(--dur-ui) var(--ease-ui);
+  pointer-events: none;
+}
+
+.card-highlight:hover,
+.card-highlight:focus-visible {
+  border-color: transparent;
+  box-shadow: var(--shadow-glow-card);
+}
+
+.card-highlight:hover::before,
+.card-highlight:focus-visible::before {
+  opacity: 1;
+}
+
+/* Sideways intro. The side-by-side layout applies from first paint under the
+   same media query GSAP uses, so nothing jumps when the pin is created. */
+@media (min-width: 1200px) and (min-height: 820px) and (prefers-reduced-motion: no-preference) {
+  .intro {
+    height: calc(100svh - var(--header-h));
+    overflow: clip;
+  }
+
+  .intro-track {
+    flex-direction: row;
+    width: 200%;
+    height: 100%;
+  }
+
+  /* Each panel is exactly one screen (half the track). Percentage padding
+     resolves against the track, so the page margin is worked out from 50%. */
+  .intro-panel {
+    display: flex;
+    flex: 0 0 50%;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding-top: 24px;
+    padding-inline: max(var(--page-x), calc((50% - var(--content)) / 2));
+  }
+
+  .intro-panel:first-child {
+    padding-bottom: 72px;
+  }
+
+  .intro-panel:last-child {
+    padding-bottom: 56px;
+  }
+
+  .intro-cue {
+    display: flex;
+  }
+}
+
+/* Custom cursor (pointer devices without reduced motion). GSAP moves the two
+   followers; the shapes inside only ever change opacity and scale. */
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
+}
+
+.cursor-shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: -50% -50%;
+  opacity: 0;
+  scale: 0.6;
+  transition:
+    opacity var(--dur-fast) var(--ease-ui),
+    scale var(--dur-fast) var(--ease-ui);
+}
+
+.cursor[data-variant="default"] :is(.cursor-ring, .cursor-dot),
+.cursor[data-variant="link"] :is(.cursor-link, .cursor-dot),
+.cursor[data-variant="card"] .cursor-card,
+.cursor[data-variant="text"] .cursor-caret {
+  opacity: 1;
+  scale: 1;
+}
+
+.cursor[data-variant="link"] .cursor-dot {
+  background: var(--blue);
+}
+
+/* Project room */
+/* Request-flow packets. Each dot rests where Figma draws it; with motion
+   allowed it runs along its 110px connector instead: request out (blue), then
+   response back (green), one leg per quarter of the cycle. */
+@keyframes room-packet-out {
+  0% {
+    translate: -5px 0;
+    opacity: 0;
+  }
+  2%,
+  23% {
+    opacity: 1;
+  }
+  25%,
+  100% {
+    translate: 105px 0;
+    opacity: 0;
+  }
+}
+
+@keyframes room-packet-back {
+  0% {
+    translate: 105px 0;
+    opacity: 0;
+  }
+  2%,
+  23% {
+    opacity: 1;
+  }
+  25%,
+  100% {
+    translate: -5px 0;
+    opacity: 0;
+  }
+}
+
+/* Longhands on purpose: the per-leg delay is set with a utility on each dot. */
+@media (prefers-reduced-motion: no-preference) {
+  .room-packet-out,
+  .room-packet-back {
+    animation-duration: 3.2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: backwards;
+  }
+
+  .room-packet-out {
+    animation-name: room-packet-out;
+  }
+
+  .room-packet-back {
+    animation-name: room-packet-back;
   }
 }
