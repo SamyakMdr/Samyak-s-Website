@@ -10,7 +10,12 @@ export const site = {
   city: "Kathmandu",
   country: "Nepal",
   url: "https://yourdomain.com",
-  cv: { href: "/cv/samyak-cv.pdf", file: "samyak-cv.pdf", size: "180 KB", updated: "Updated October 2026 · 180 KB" },
+  cv: {
+    href: "/cv/samyak-cv.pdf",
+    file: "samyak-cv.pdf",
+    size: "180 KB",
+    updated: "Updated October 2026 · 180 KB",
+  },
 };
 
 export interface NavItem {
@@ -25,9 +30,19 @@ export interface NavItem {
 
 export const nav: NavItem[] = [
   { branch: "main", title: "Home", href: "/#main", section: "main" },
-  { branch: "experience", title: "Experience", href: "/#experience", section: "experience" },
+  {
+    branch: "experience",
+    title: "Experience",
+    href: "/#experience",
+    section: "experience",
+  },
   { branch: "feature/projects", title: "Projects", href: "/projects" },
-  { branch: "contact", title: "Contact", href: "/#contact", section: "contact" },
+  {
+    branch: "contact",
+    title: "Contact",
+    href: "/#contact",
+    section: "contact",
+  },
 ];
 
 export const header = {
@@ -57,7 +72,8 @@ export const a11y = {
   carousel: "carousel",
   slide: "slide",
   slideOf: (index: number, total: number) => `${index} of ${total}`,
-  carouselDots: (index: number, total: number) => `Project ${index} of ${total}. Show the next one`,
+  carouselDots: (index: number, total: number) =>
+    `Project ${index} of ${total}. Show the next one`,
 };
 
 /** Label on the custom cursor while it is over a project card. */
@@ -76,11 +92,9 @@ export const hero = {
   fileMeta: "main · HEAD · updated 2 days ago",
   fileMetaMobile: "main · HEAD",
   badge: "Open to junior roles and freelance work",
-  title: "Samyak builds fast web apps and dependable backends.",
+  title: "I'm Samyak Manandhar and Welcome to My Space.",
   intro:
-    "I design and build web applications end to end, from the interface people use to the API, database and server underneath. Most of my work is in TypeScript, NestJS and PostgreSQL.",
-  introMobile:
-    "I design and build web applications end to end, from the interface to the API, database and server underneath.",
+    "I’m a full-stack developer building modern, scalable, and user-focused web applications with TypeScript, NestJS, PostgreSQL, and React.",
   primary: { label: "Download CV", href: "/#cv" },
   secondary: { label: "View projects", href: "/#projects" },
   cue: "Scroll to open the terminal",
@@ -137,7 +151,8 @@ export const activityGraph = {
   label: "Recent work",
   caption:
     "Six projects in the order I built them, oldest on the left. Hover a dot to see its command, click to open it.",
-  captionMobile: "Recent work as a commit graph, newest first. Tap a project to open it.",
+  captionMobile:
+    "Recent work as a commit graph, newest first. Tap a project to open it.",
   head: "HEAD",
   headMobile: "HEAD · main",
   tooltipHint: "↵ or click to open",
@@ -148,7 +163,8 @@ export const projectsSection = {
   title: "Selected projects",
   branch: "feature/projects",
   tone: "blue" satisfies Tone as Tone,
-  intro: "Six recent builds. Open one to see screenshots, the architecture and what I learned.",
+  intro:
+    "Six recent builds. Open one to see screenshots, the architecture and what I learned.",
   introMobile: "Six recent builds. Tap one to open it.",
   viewAll: "View all 12 projects",
   openRoom: "Open room",
@@ -157,15 +173,18 @@ export const projectsSection = {
 export const projectsPage = {
   breadcrumb: ["home", "projects"],
   title: "All projects",
-  intro: "Twelve builds across web apps, APIs, DevOps and interface design. Filter by type or search by tool.",
-  introMobile: "Twelve builds across web apps, APIs, DevOps and interface design.",
+  intro:
+    "Twelve builds across web apps, APIs, DevOps and interface design. Filter by type or search by tool.",
+  introMobile:
+    "Twelve builds across web apps, APIs, DevOps and interface design.",
   searchPlaceholder: "filter by name or tool, e.g. nestjs",
   searchPlaceholderMobile: "filter, e.g. nestjs",
   searchLabel: "Filter projects",
   filtersLabel: "Project type",
   sort: "Sort: newest first",
   // Not in Figma: shown when the search and type filter match nothing.
-  empty: (query: string) => (query ? `no projects match ${query}` : "no projects of this type yet"),
+  empty: (query: string) =>
+    query ? `no projects match ${query}` : "no projects of this type yet",
   clear: "Clear filters",
 };
 
@@ -195,7 +214,8 @@ export const cvBand = {
   id: "cv",
   title: "Get my CV",
   text: "A two-page PDF with my experience, projects, skills and education. You can also type download cv in the terminal.",
-  textMobile: "A two-page PDF with my experience, projects, skills and education.",
+  textMobile:
+    "A two-page PDF with my experience, projects, skills and education.",
   primary: "Download PDF",
   secondary: "View it online",
   terminal: [
@@ -250,7 +270,7 @@ export const footer = {
 
 export const seo = {
   home: {
-    title: "Samyak | Full-Stack Developer in Kathmandu, Nepal",
+    title: "Samyak Manandhar | Full-Stack Developer in Kathmandu, Nepal",
     description:
       "Full-stack developer building fast web apps and dependable backends with TypeScript, NestJS and PostgreSQL. View projects or download my CV.",
   },
@@ -267,7 +287,8 @@ export const seo = {
     },
   } as Record<string, { title: string; description: string }>,
   ogImage: "/og/og-default.png",
-  ogImageAlt: "README.md card: Samyak builds fast web apps and dependable backends.",
+  ogImageAlt:
+    "README.md card: Samyak builds fast web apps and dependable backends.",
   /** Names used in breadcrumb structured data. */
   breadcrumbs: { home: "Home", projects: "Projects" },
 };

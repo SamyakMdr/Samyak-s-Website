@@ -180,7 +180,8 @@ Mono/Small `--dim`.
 ### Terminal / History (Reusable) → `<HistoryTerminal>`
 470 wide in the hero, title `~/samyak — zsh`. Output padding 16/18/18/18, gap 6,
 Mono/Code. Content in `content.md` (history + git log). Ends with `$` + blinking 8 × 17
-green block. Mobile: shorter (tail -4, -2 commits).
+green block. Mobile: shorter (tail -4, -2 commits). The prompt is live (`<TerminalShell>`,
+also used by the CV band terminal): see `interactions.md §1.2b`.
 
 ### Terminal / Interactive (Reusable) → `<InteractiveTerminal>`
 Fills the left column (≈ 820 wide, **503 tall** desktop). Title
@@ -252,8 +253,8 @@ components/
   ui/        Button, FilterChip, HintChip, Kbd, BranchTag, NavTab, StatusPill,
              AvailabilityBadge, BackToTop, ThemeToggle, TechLogo, Field
   layout/    SiteHeader, MobileMenu, Footer, SectionHead, Glow, CustomCursor
-  terminal/  TerminalWindow, HistoryTerminal, InteractiveTerminal, ShortcutsCard,
-             TerminalPrompt, commands.ts, useTerminal.ts
+  terminal/  TerminalWindow, HistoryTerminal, InteractiveTerminal, TerminalShell,
+             ShortcutsCard, TerminalPrompt, commands.ts, useTerminal.ts
   content/   ProjectCard, ProjectCarousel, StackChip, StackSlider, Stat,
              ContactRow, ActivityRow, TimelineItem, CommitGraph, CommitDot
 app/(site)/

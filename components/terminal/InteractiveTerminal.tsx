@@ -1,12 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useId, useRef } from "react";
 import { slashMenu, terminalCopy } from "@/content/commands";
 import { a11y } from "@/content/site";
 import { cn } from "@/lib/cn";
 
+import { loadOutput, TerminalOutput } from "./TerminalOutputLazy";
 import { Caret, TerminalWindow } from "./TerminalWindow";
 import { useTerminal } from "./useTerminal";
 
@@ -22,23 +22,25 @@ function Swap({ desktop, mobile }: { desktop: string; mobile?: string }) {
   );
 }
 
-// Output only exists after a command has run, so its code (and the animation
-// library it uses) is fetched when the prompt is first focused.
-const loadOutput = () => import("./TerminalOutput").then((module) => module.TerminalOutput);
-const TerminalOutput = dynamic(loadOutput, { ssr: false });
-
 export function InteractiveTerminal({ className }: { className?: string }) {
-  const terminal = useTerminal(slashMenu);
+  const terminal = useTerminal({ menu: slashMenu, main: true });
   const { input, entries, menu, menuOpen, activeIndex, suggestion, inputRef } = terminal;
   const log = useRef<HTMLDivElement>(null);
   const inputId = useId();
   const listId = useId();
 
-  // Keep the newest output in view, just above the input.
+  // Keep the newest output in view, just above the input. The first output
+  // lands a moment after its command (its code is fetched on demand), so the
+  // log is followed as rows are added, not when the command is entered.
   useEffect(() => {
     const element = log.current;
-    if (element) element.scrollTop = element.scrollHeight;
-  }, [entries]);
+    if (!element) return;
+    const observer = new MutationObserver(() => {
+      element.scrollTop = element.scrollHeight;
+    });
+    observer.observe(element, { childList: true });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <TerminalWindow

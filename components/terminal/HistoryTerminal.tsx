@@ -1,6 +1,7 @@
 import { historyTerminal } from "@/content/site";
 import { cn } from "@/lib/cn";
-import { Caret, TerminalWindow } from "./TerminalWindow";
+import { TerminalShell } from "./TerminalShell";
+import { TerminalWindow } from "./TerminalWindow";
 
 type HistoryView = {
   historyCommand: string;
@@ -10,18 +11,19 @@ type HistoryView = {
   log: { hash: string; message: string }[];
 };
 
-function Prompt({ children }: { children?: string }) {
+function Prompt({ children }: { children: string }) {
   return (
     <p className="flex items-center gap-2">
       <span className="text-green-t">$</span>
-      {children ? <span>{children}</span> : <Caret />}
+      <span>{children}</span>
     </p>
   );
 }
 
+// The rows sit straight in the shell's column, so its gap spaces them.
 function Lines({ view, className }: { view: HistoryView; className?: string }) {
   return (
-    <div className={cn("flex flex-col whitespace-nowrap", className)}>
+    <div className={cn("contents", className)}>
       <Prompt>{view.historyCommand}</Prompt>
       {view.history.map((line, index) => (
         <p key={line} className="flex items-center gap-3 tablet:gap-3.5">
@@ -38,23 +40,26 @@ function Lines({ view, className }: { view: HistoryView; className?: string }) {
         </p>
       ))}
       <span className="h-1.5 max-tablet:hidden" />
-      <Prompt />
     </div>
   );
 }
 
-// Decorative shell history in the README hero. Mobile shows a shorter tail in
-// 12px type, with a bare bar (no title) and no blank lines between commands.
+// Shell history in the README hero, ending in a prompt that takes commands.
+// Mobile shows a shorter tail in 12px type, with a bare bar (no title) and no
+// blank lines between commands.
 export function HistoryTerminal({ className }: { className?: string }) {
   const desktop: HistoryView = { ...historyTerminal, historyStart: 1 };
   const mobile: HistoryView = historyTerminal.mobile;
 
   return (
     <TerminalWindow title={<span className="max-tablet:hidden">{historyTerminal.title}</span>} className={className}>
-      <div aria-hidden="true" className="overflow-hidden px-3.5 py-2.75 tablet:px-4.5 tablet:pt-4 tablet:pb-4.5">
-        <Lines view={desktop} className="t-code gap-1.5 max-tablet:hidden" />
-        <Lines view={mobile} className="t-code-m gap-0.5 tablet:hidden" />
-      </div>
+      <TerminalShell
+        className="px-3.5 py-2.75 tablet:t-code tablet:gap-1.5 tablet:px-4.5 tablet:pt-4 tablet:pb-4.5 max-tablet:t-code-m max-tablet:gap-0.5"
+        entryClassName="tablet:pb-3"
+      >
+        <Lines view={desktop} className="max-tablet:hidden" />
+        <Lines view={mobile} className="tablet:hidden" />
+      </TerminalShell>
     </TerminalWindow>
   );
 }

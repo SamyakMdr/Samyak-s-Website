@@ -16,8 +16,8 @@ normal link or button. Nothing breaks if the terminal is never used.
 |---|---|---|
 | `/projects` | `goto projects`, `git checkout projects`, `cd projects` | Go to `/projects`. `--type <web\|backend\|devops\|ai\|ui>` prints matching projects inline |
 | `/open <slug>` | `open <slug>` | Go to `/projects/<slug>` (`heli`, `mhn`, `voice`, `backup`, `travelease`, `scan-review`, …) |
-| `/cv` | `download cv` | Download `samyak-cv.pdf`, print `✓ samyak-cv.pdf · 180 KB` |
-| `/experience` | `goto experience`, `git log` | Scroll to `#experience`; `git log` also prints the commit list |
+| `/cv` | `download cv` | Download `samyak-cv.pdf`, print `✓ samyak-cv.pdf · 180 KB`. Flags are ignored (`download cv --format pdf`) |
+| `/experience` | `goto experience`, `git log` | Scroll to `#experience`; `git log` also prints the commit list. With flags (`git log --oneline -3`) it only prints |
 | `/contact` | `goto contact` | Scroll to `#contact` |
 | `goto home` | `cd ~`, `/home` | Scroll to top / go to `/` |
 | `/theme` | `switch-theme` | Toggle light/dark |
@@ -25,6 +25,15 @@ normal link or button. Nothing breaks if the terminal is never used.
 | `git branch` | | Print the sections as branches |
 | `cat skills.json` | | Print the stack as JSON |
 | `clear` | | Clear the output |
+| `cd <place>` | `goto <place>`, `git checkout <branch>`, `git switch <branch>` | Go to any page, section, branch or project (`cd skills`, `git switch services`, `cd projects/heli`); `cd`, `cd ~` and `cd ..` go home. `main` and `home` are the same place (`goto main`, `/main`, `git checkout main`) |
+| `ls [folder]` | | List the files below and `projects/`; `ls projects` lists a file per project; `-l` adds a description. Entries are clickable |
+| `cat <file>` | | Print `README.md`, `skills.json`, `experience.log`, `education.md`, `services.md`, `contact.txt` or `projects/<alias>.md` (extension optional) |
+| `whoami`, `pwd`, `date`, `echo <text>` | | Print what a shell would |
+| `history` | | The commands on the hero terminal, then everything typed this session, numbered |
+| `… \| head`, `tail`, `grep`, `wc -l` | | Trim what the command before printed (`history \| tail -6`) |
+
+An unknown first word prints `✗ command not found: <word>`; a known command with a wrong
+page or file keeps `✗ no page called …` / `✗ no file called …`.
 
 Slash menu (shown when the input starts with `/`), in this order:
 `/projects` · `/open <name>` · `/cv` · `/experience` · `/contact` · `/theme` · `/help`.
@@ -34,6 +43,12 @@ Mobile list: `/projects`, `/open heli`, `/cv`, `/experience`, `/contact`, `/help
 ↑ ↓ move in the menu / history · Tab completes · ↵ runs · Esc clears / closes the menu.
 Output: each command and its result is appended **just above the input**; older lines
 scroll up. Keep history in `sessionStorage`.
+
+### 1.2b Small terminals (README hero, CV band)
+The prompt under their drawn lines is live and takes the same commands as the main
+terminal (`TerminalShell`). The frame keeps its drawn height: output prints above the
+prompt and older lines scroll up inside it. No slash menu; `/` and `Ctrl K` still focus
+the main terminal, and hint chips still type into it. History is shared by all three.
 
 ### 1.3 States (Figma board "Terminal and hint states")
 1. **Idle (first visit):** `samyak@dev:~$ █` + `type help, or try goto projects`

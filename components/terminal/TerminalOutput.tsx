@@ -8,10 +8,21 @@ import { Fragment } from "react";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { terminalCopy } from "@/content/commands";
 import { getProject, projectHref } from "@/content/projects";
+import { a11y } from "@/content/site";
+import { cn } from "@/lib/cn";
 import type { OutputLine } from "@/lib/commands";
 import type { TerminalEntry } from "./useTerminal";
 
-function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => void }) {
+type LineProps = {
+  line: OutputLine;
+  onRun: (command: string) => void;
+  /** Spacing between the rows of one line, where the terminal has any. */
+  rows?: string;
+};
+
+function Line({ line, onRun, rows }: LineProps) {
+  const column = cn("flex flex-col", rows);
+
   switch (line.kind) {
     case "ok":
       return (
@@ -41,7 +52,7 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => v
       );
     case "pairs":
       return (
-        <div className="flex flex-col">
+        <div className={column}>
           {line.rows.map((row) => (
             <p key={row.command} className="flex gap-2">
               <span className="text-blue-t">{row.command}</span>
@@ -52,7 +63,7 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => v
       );
     case "keys":
       return (
-        <div className="flex flex-col">
+        <div className={column}>
           {line.rows.map((row) => (
             <p key={row.label} className="flex gap-2">
               <span className="min-w-12 text-warn">{row.keys.join(" ")}</span>
@@ -63,7 +74,7 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => v
       );
     case "log":
       return (
-        <div className="flex flex-col">
+        <div className={column}>
           {line.rows.map((row) => (
             <p key={row.hash} className="flex gap-2">
               <span className="text-warn">{row.hash}</span>
@@ -74,7 +85,7 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => v
       );
     case "branches":
       return (
-        <div className="flex flex-col">
+        <div className={column}>
           {line.rows.map((row) => (
             <p key={row.name} className={row.current ? "text-green-t" : undefined}>
               <span className="whitespace-pre">{row.current ? "* " : "  "}</span>
@@ -84,7 +95,59 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => v
         </div>
       );
     case "json":
-      return <pre className="font-mono whitespace-pre-wrap text-code-fg">{line.text}</pre>;
+    case "text":
+      // A blank line still takes a row (`| head` prints the lines one by one).
+      return <pre className="font-mono whitespace-pre-wrap text-code-fg">{line.text || " "}</pre>;
+    case "numbered":
+      return (
+        <div className={column}>
+          {line.rows.map((row) => (
+            <p key={row.n} className="flex gap-3 tablet:gap-3.5">
+              <span className="whitespace-pre text-dim">{String(row.n).padStart(3, " ")}</span>
+              <span>{row.text}</span>
+            </p>
+          ))}
+        </div>
+      );
+    case "run":
+      return (
+        <div className={line.inline ? cn("flex flex-wrap gap-x-4", rows && "gap-y-[inherit]") : column}>
+          {line.rows.map((row) => (
+            <p key={row.label} className="flex min-w-0 gap-2">
+              <button
+                type="button"
+                onClick={() => onRun(row.run)}
+                aria-label={a11y.runCommand(row.run)}
+                className={cn("shrink-0 rounded-xs hover:underline", row.folder && "text-blue-t")}
+              >
+                {row.label}
+              </button>
+              {row.description && <span className="truncate text-dim">{row.description}</span>}
+            </p>
+          ))}
+        </div>
+      );
+    case "fields":
+      return (
+        <div className={column}>
+          {line.rows.map((row) => (
+            <p key={row.label} className="flex gap-2">
+              <span className="w-[10ch] shrink-0 text-dim">{row.label}</span>
+              {row.href ? (
+                <a
+                  href={row.href}
+                  className="min-w-0 rounded-xs break-all text-blue-t hover:underline"
+                  {...(row.href.startsWith("http") && { target: "_blank", rel: "noopener noreferrer" })}
+                >
+                  {row.value}
+                </a>
+              ) : (
+                <span className="min-w-0">{row.value}</span>
+              )}
+            </p>
+          ))}
+        </div>
+      );
     case "projects":
       return (
         <ul className="flex flex-col gap-1.5 py-1">
@@ -120,9 +183,19 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (command: string) => v
   }
 }
 
+type TerminalOutputProps = {
+  entries: TerminalEntry[];
+  onRun: (command: string) => void;
+  /** The small terminals: a `$` prompt, and rows spaced like the lines already in the frame. */
+  shell?: boolean;
+  /** Added to each command and its result (the hero leaves a blank line under each). */
+  entryClassName?: string;
+};
+
 // Commands and their results, oldest first: the newest sits just above the input.
-export function TerminalOutput({ entries, onRun }: { entries: TerminalEntry[]; onRun: (command: string) => void }) {
+export function TerminalOutput({ entries, onRun, shell = false, entryClassName }: TerminalOutputProps) {
   const reducedMotion = useReducedMotion();
+  const rows = shell ? "gap-[inherit]" : undefined;
 
   return (
     <MotionProvider>
@@ -132,15 +205,15 @@ export function TerminalOutput({ entries, onRun }: { entries: TerminalEntry[]; o
           initial={reducedMotion ? false : { opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.12, ease: "easeOut" }}
-          className="flex flex-col text-code-fg tablet:t-code max-tablet:t-code-m"
+          className={cn("flex flex-col text-code-fg tablet:t-code max-tablet:t-code-m", rows, entryClassName)}
         >
-          <p className="flex gap-2.5">
-            <span className="text-green-t">❯</span>
+          <p className={cn("flex", shell ? "gap-2" : "gap-2.5")}>
+            <span className="text-green-t">{shell ? "$" : "❯"}</span>
             <span>{entry.command}</span>
           </p>
           {entry.lines.map((line, index) => (
             <Fragment key={index}>
-              <Line line={line} onRun={onRun} />
+              <Line line={line} onRun={onRun} rows={rows} />
             </Fragment>
           ))}
         </m.div>

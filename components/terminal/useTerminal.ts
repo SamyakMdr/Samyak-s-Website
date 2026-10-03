@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { SlashItem } from "@/content/commands";
 import { COMPLETIONS, useCommands, type OutputLine } from "@/lib/commands";
+import { readHistory, recordHistory } from "@/lib/shellHistory";
 
 export interface TerminalEntry {
   id: number;
@@ -10,40 +11,24 @@ export interface TerminalEntry {
   lines: OutputLine[];
 }
 
-const HISTORY_KEY = "terminal-history";
-const HISTORY_LIMIT = 50;
+type TerminalOptions = {
+  /** Slash menu rows. The small terminals have none. */
+  menu?: SlashItem[];
+  /** The page's main terminal: "/" and Ctrl K focus it, and hint chips type into it. */
+  main?: boolean;
+};
 
-function readHistory(): string[] {
-  try {
-    const stored = window.sessionStorage.getItem(HISTORY_KEY);
-    return stored ? (JSON.parse(stored) as string[]) : [];
-  } catch {
-    return [];
-  }
-}
+const NO_MENU: SlashItem[] = [];
 
-function writeHistory(history: string[]): void {
-  try {
-    window.sessionStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-HISTORY_LIMIT)));
-  } catch {
-    // History is a convenience; ignore storage failures.
-  }
-}
-
-export function useTerminal(menuItems: SlashItem[]) {
+export function useTerminal({ menu: menuItems = NO_MENU, main = false }: TerminalOptions = {}) {
   const { run, registerTerminal, noteTerminalUse } = useCommands();
-  // The Figma frame shows the terminal with "/" typed and the menu open.
-  const [input, setInput] = useState("/");
+  // The Figma frame shows the main terminal with "/" typed and the menu open.
+  const [input, setInput] = useState(main ? "/" : "");
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const history = useRef<string[]>([]);
   const historyIndex = useRef<number | null>(null);
   const nextId = useRef(0);
-
-  useEffect(() => {
-    history.current = readHistory();
-  }, []);
 
   const menu = useMemo(() => {
     if (!input.startsWith("/")) return [];
@@ -69,8 +54,7 @@ export function useTerminal(menuItems: SlashItem[]) {
       if (!command) return;
       noteTerminalUse();
       const result = run(command);
-      history.current = [...history.current.filter((item) => item !== command), command];
-      writeHistory(history.current);
+      recordHistory(command);
       historyIndex.current = null;
       setEntries((previous) =>
         result.clear ? [] : [...previous, { id: nextId.current++, command, lines: result.lines }],
@@ -87,19 +71,18 @@ export function useTerminal(menuItems: SlashItem[]) {
     setInput(value);
   }, []);
 
-  useEffect(
-    () =>
-      registerTerminal({
-        focus: () => {
-          const element = inputRef.current;
-          if (!element) return;
-          element.focus({ preventScroll: true });
-          element.setSelectionRange(element.value.length, element.value.length);
-        },
-        submit,
-      }),
-    [registerTerminal, submit],
-  );
+  useEffect(() => {
+    if (!main) return;
+    return registerTerminal({
+      focus: () => {
+        const element = inputRef.current;
+        if (!element) return;
+        element.focus({ preventScroll: true });
+        element.setSelectionRange(element.value.length, element.value.length);
+      },
+      submit,
+    });
+  }, [main, registerTerminal, submit]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
@@ -113,7 +96,7 @@ export function useTerminal(menuItems: SlashItem[]) {
             setSelected((activeIndex + step + menu.length) % menu.length);
             return;
           }
-          const list = history.current;
+          const list = readHistory();
           if (list.length === 0) return;
           const current = historyIndex.current ?? list.length;
           const next = Math.min(Math.max(current + step, 0), list.length);

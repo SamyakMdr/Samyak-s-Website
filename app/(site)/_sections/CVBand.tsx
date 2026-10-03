@@ -1,27 +1,18 @@
-import { Caret, TerminalWindow } from "@/components/terminal/TerminalWindow";
+import { TerminalShell } from "@/components/terminal/TerminalShell";
+import { TerminalWindow } from "@/components/terminal/TerminalWindow";
 import { Button } from "@/components/ui/Button";
 import { cvBand, site } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 type Line = { prompt: string; text: string; tone: "command" | "info" | "success" };
 
-function Lines({ lines, caret = false, className }: { lines: readonly Line[]; caret?: boolean; className?: string }) {
-  return (
-    <div aria-hidden="true" className={cn("flex flex-col whitespace-nowrap", className)}>
-      {lines.map((line) => (
-        <p key={line.text} className={cn("flex items-center gap-2", line.tone === "info" && "text-dim")}>
-          <span className={line.tone === "info" ? undefined : "text-green-t"}>{line.prompt}</span>
-          <span>{line.text}</span>
-        </p>
-      ))}
-      {caret && (
-        <p className="flex items-center gap-2">
-          <span className="text-green-t">$</span>
-          <Caret className="tablet:h-4" />
-        </p>
-      )}
-    </div>
-  );
+function Lines({ lines }: { lines: readonly Line[] }) {
+  return lines.map((line) => (
+    <p key={line.text} className={cn("flex items-center gap-2", line.tone === "info" && "text-dim")}>
+      <span className={line.tone === "info" ? undefined : "text-green-t"}>{line.prompt}</span>
+      <span>{line.text}</span>
+    </p>
+  ));
 }
 
 export function CVBand() {
@@ -44,13 +35,18 @@ export function CVBand() {
           </div>
         </div>
 
+        {/* The prompt under these lines takes commands, download cv among them. */}
         <TerminalWindow compact className="w-full shrink-0 max-tablet:hidden desktop:w-120">
-          <Lines lines={cvBand.terminal} caret className="t-code gap-2 overflow-hidden px-4.5 pt-4 pb-4.5" />
+          <TerminalShell className="t-code gap-2 px-4.5 pt-4 pb-4.5" caretClassName="tablet:h-4">
+            <Lines lines={cvBand.terminal} />
+          </TerminalShell>
         </TerminalWindow>
 
         {/* Mobile: a bare two-line terminal, then one full-width download button. */}
         <div data-theme="dark" className="overflow-hidden rounded-md bg-code-bg px-3.5 py-2.5 text-code-fg tablet:hidden">
-          <Lines lines={cvBand.terminalMobile} className="t-code-m gap-1" />
+          <div aria-hidden="true" className="t-code-m flex flex-col gap-1 whitespace-nowrap">
+            <Lines lines={cvBand.terminalMobile} />
+          </div>
         </div>
         <Button
           href={site.cv.href}

@@ -8,12 +8,19 @@ export function ActivityGraph() {
     <section
       id={activityGraph.id}
       aria-label={activityGraph.label}
-      className="page-x flex flex-col gap-2.5 py-6 tablet:pt-0 tablet:pb-10"
+      className="page-x flex flex-col gap-2.5 py-6 tablet:pt-14 tablet:pb-14"
     >
-      <p className="t-body-sm text-dim max-tablet:hidden">{activityGraph.caption}</p>
-      <p className="t-body-sm text-dim tablet:hidden">{activityGraph.captionMobile}</p>
+      <p className="t-body-sm text-dim max-tablet:hidden">
+        {activityGraph.caption}
+      </p>
+      <p className="t-body-sm text-dim tablet:hidden">
+        {activityGraph.captionMobile}
+      </p>
       {/* Below 1120px the graph scales down, so the labels above main need room. */}
-      <CommitGraph orientation="horizontal" className="max-tablet:hidden max-desktop:mt-6" />
+      <CommitGraph
+        orientation="horizontal"
+        className="max-tablet:hidden max-desktop:mt-6"
+      />
       <CommitGraph orientation="vertical" className="tablet:hidden" />
     </section>
   );

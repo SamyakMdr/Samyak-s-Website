@@ -27,12 +27,21 @@ function ContactCard() {
       </div>
 
       {contactCard.details.map((detail) => (
-        <ContactRow key={detail.label} detail={detail} className={cn(detail.desktopOnly && "max-tablet:hidden")} />
+        <ContactRow
+          key={detail.label}
+          detail={detail}
+          className={cn(detail.desktopOnly && "max-tablet:hidden")}
+        />
       ))}
 
       {/* The mobile card goes straight from the rows to the social logos. */}
-      <span aria-hidden="true" className="h-px shrink-0 bg-line max-tablet:hidden" />
-      <h3 className="t-h4 text-fg max-tablet:hidden">{contactCard.socialsTitle}</h3>
+      <span
+        aria-hidden="true"
+        className="h-px shrink-0 bg-line max-tablet:hidden"
+      />
+      <h3 className="t-h4 text-fg max-tablet:hidden">
+        {contactCard.socialsTitle}
+      </h3>
       {/* 24px marks in 40px tap areas; the row is pulled left so the first mark lines up with the text. */}
       <ul aria-label={contactCard.socialsTitle} className="-ml-2 flex gap-1">
         {socials.map((social) => (
@@ -47,7 +56,9 @@ function ContactCard() {
           </li>
         ))}
       </ul>
-      <AvailabilityBadge className="self-start max-tablet:hidden">{contactCard.badge}</AvailabilityBadge>
+      <AvailabilityBadge className="self-start max-tablet:hidden">
+        {contactCard.badge}
+      </AvailabilityBadge>
     </aside>
   );
 }

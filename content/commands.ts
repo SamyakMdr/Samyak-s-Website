@@ -1,3 +1,4 @@
+import { site } from "./site";
 import type { ProjectType } from "./types";
 
 // One registry shared by the terminal, the hint chips, the keyboard shortcuts
@@ -14,7 +15,16 @@ export type CommandId =
   | "git-log"
   | "git-branch"
   | "skills"
-  | "clear";
+  | "clear"
+  | "cd"
+  | "goto"
+  | "ls"
+  | "cat"
+  | "pwd"
+  | "whoami"
+  | "echo"
+  | "date"
+  | "history";
 
 export interface CommandSpec {
   id: CommandId;
@@ -22,24 +32,61 @@ export interface CommandSpec {
   name: string;
   /** Other spellings that run the same command. */
   aliases: string[];
-  /** Takes an argument after the name (a project, or --type). */
+  /** Takes an argument after the name (a project, a file, or flags). */
   takesArgument?: boolean;
 }
 
 export const commands: CommandSpec[] = [
   { id: "projects", name: "/projects", aliases: ["goto projects", "git checkout projects", "cd projects"], takesArgument: true },
   { id: "open", name: "/open", aliases: ["open"], takesArgument: true },
-  { id: "cv", name: "/cv", aliases: ["download cv"] },
+  { id: "cv", name: "/cv", aliases: ["download cv"], takesArgument: true },
   { id: "experience", name: "/experience", aliases: ["goto experience"] },
-  { id: "git-log", name: "git log", aliases: [] },
+  { id: "git-log", name: "git log", aliases: [], takesArgument: true },
   { id: "contact", name: "/contact", aliases: ["goto contact"] },
-  { id: "home", name: "goto home", aliases: ["cd ~", "/home"] },
+  { id: "home", name: "goto home", aliases: ["cd ~", "/home", "/main"] },
   { id: "theme", name: "/theme", aliases: ["switch-theme"] },
   { id: "help", name: "/help", aliases: ["help", "?"] },
-  { id: "git-branch", name: "git branch", aliases: [] },
+  { id: "git-branch", name: "git branch", aliases: [], takesArgument: true },
   { id: "skills", name: "cat skills.json", aliases: [] },
   { id: "clear", name: "clear", aliases: [] },
+  // Plain shell commands, for visitors who type what they would in any terminal.
+  // The longer spellings above ("cd projects", "goto home") still win.
+  { id: "cd", name: "cd", aliases: [], takesArgument: true },
+  { id: "goto", name: "goto", aliases: ["git checkout", "git switch"], takesArgument: true },
+  { id: "ls", name: "ls", aliases: [], takesArgument: true },
+  { id: "cat", name: "cat", aliases: [], takesArgument: true },
+  { id: "pwd", name: "pwd", aliases: [] },
+  { id: "whoami", name: "whoami", aliases: [] },
+  { id: "echo", name: "echo", aliases: [], takesArgument: true },
+  { id: "date", name: "date", aliases: [] },
+  { id: "history", name: "history", aliases: [] },
 ];
+
+export type FileId = "readme" | "skills" | "experience" | "education" | "services" | "contact" | "cv";
+
+export interface FileSpec {
+  /** Also the short name: `cat readme` reads README.md. */
+  id: FileId;
+  name: string;
+  description: string;
+}
+
+// What `ls` lists and `cat` reads. Every file prints content the page already shows.
+export const files: FileSpec[] = [
+  { id: "readme", name: "README.md", description: "who I am" },
+  { id: "skills", name: "skills.json", description: "my stack as JSON" },
+  { id: "experience", name: "experience.log", description: "where I have worked" },
+  { id: "education", name: "education.md", description: "where I studied" },
+  { id: "services", name: "services.md", description: "how I can help" },
+  { id: "contact", name: "contact.txt", description: "email, phone and website" },
+  { id: "cv", name: site.cv.file, description: "my CV, try download cv" },
+];
+
+/** The one folder: a file per project. */
+export const projectsFolder = {
+  name: "projects",
+  description: (count: number) => `${count} projects, one file each`,
+};
 
 export interface SlashItem {
   /** Text shown in the menu and typed into the input. */
@@ -177,8 +224,23 @@ export const terminalCopy = {
     { command: "download cv" },
     { command: "switch-theme" },
   ] as { command: string; description?: string }[],
+  // More help rows: the shell commands.
+  shell: [
+    { command: "ls [folder]", description: "what is here, -l for details" },
+    { command: "cat <file>", description: "read a file, e.g. cat README.md" },
+    { command: "cd <page>", description: "same as goto" },
+    { command: "history", description: "what has been typed" },
+    { command: "whoami, pwd, date, echo" },
+    { command: "… | head, tail, grep, wc -l", description: "trim what a command prints" },
+  ] as { command: string; description?: string }[],
   idleHint: "type help, or try goto projects",
   noFile: (name: string) => `no file called ${name}`,
+  commandNotFound: (name: string) => `command not found: ${name}`,
+  isFolder: (name: string) => `${name} is a folder, try ls ${name}`,
+  isPdf: (name: string) => `${name} is a PDF, try download cv`,
+  missingFile: "which file? try cat README.md",
+  missingPlace: "where to? try goto projects",
+  openRoom: "see the project room",
   hintToast: {
     text: "Tip: this site has a terminal. Type",
     command: "help",
