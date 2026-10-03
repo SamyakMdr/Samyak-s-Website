@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { tech, type TechName } from "@/content/tech";
+import { tech, type Tech, type TechName } from "@/content/tech";
 import { cn } from "@/lib/cn";
-import { hasLogo } from "@/lib/logos";
 
 type TechLogoProps = {
   name: TechName;
@@ -15,13 +14,14 @@ type TechLogoProps = {
 };
 
 export function TechLogo({ name, size = 40, ring = false, labelled = false, className }: TechLogoProps) {
-  const { slug, monogram, tile, ink } = tech[name];
+  const entry: Tech = tech[name];
+  const { slug, monogram, tile, ink } = entry;
   const a11y = labelled ? { role: "img", "aria-label": name } : { "aria-hidden": true };
 
-  if (hasLogo(slug)) {
+  if (entry.logo) {
     const src = `/logos/${slug}.svg`;
     // Marks drawn in black or navy come with a light version for dark surfaces.
-    const dark = hasLogo(`${slug}-dark`) ? `/logos/${slug}-dark.svg` : null;
+    const dark = entry.darkLogo ? `/logos/${slug}-dark.svg` : null;
     return (
       <span
         {...a11y}

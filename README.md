@@ -50,7 +50,9 @@ send email.
 
 - `public/cv/samyak-cv.pdf`: the CV. Until it exists, `download cv` in the terminal
   reports that the file is missing and the download buttons lead to a 404.
-- `public/logos/<slug>.svg`: official brand logos. Each one replaces its monogram
-  tile; slugs are listed in `content/tech.ts`.
-
-Restart the server after adding either, since both are detected at startup.
+  Restart the server after adding it, since it is detected at startup.
+- `public/logos/<slug>.svg`: official brand logos, already in place for every tool
+  in `content/tech.ts`. To add a tool, add its entry there, put the SVG in
+  `public/logos/` and set `logo: true`; without it the monogram tile is shown.
+  A mark whose colour only suits one theme also gets a `<slug>-dark.svg` for dark
+  surfaces (`darkLogo: true`).
