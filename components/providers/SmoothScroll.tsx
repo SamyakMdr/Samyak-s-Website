@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { POINTER_QUERY } from "@/lib/gsap";
-import { requestAnchor, scrollToId, setLenis } from "@/lib/scroll";
+import { requestAnchor, scrollToId, setLenis, settleScroll } from "@/lib/scroll";
 
 // Smooth scrolling on desktop pointers only; touch and reduced motion keep the
 // native scroller. Also routes in-page anchor clicks through the same scroller
@@ -57,13 +57,16 @@ export function SmoothScroll() {
         window.history.replaceState(window.history.state, "", url.hash);
       }
     };
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    // Capture phase: next/link handles its own click during bubbling and would
+    // jump to the hash natively, without the smooth scroll or the pinned anchors.
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   // Arriving with a hash (e.g. /#contact from another page): jump once the page
   // has laid out, and again if the pinned intro registers its anchors later.
   useEffect(() => {
+    settleScroll();
     const id = decodeURIComponent(window.location.hash.slice(1));
     if (!id) return;
     const frame = requestAnimationFrame(() => requestAnchor(id));

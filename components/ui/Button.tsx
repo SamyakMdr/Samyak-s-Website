@@ -69,8 +69,13 @@ export function Button(props: ButtonProps) {
 
   if (rest.href !== undefined) {
     const { href, ...anchorProps } = rest;
-    // Downloads, hashes and external URLs stay plain anchors; routes use next/link.
-    const isRoute = href.startsWith("/") && anchorProps.download === undefined;
+    // Only pages go through next/link, which prefetches them. Downloads, files
+    // (e.g. the CV PDF), new tabs, hashes and external URLs stay plain anchors.
+    const isRoute =
+      href.startsWith("/") &&
+      anchorProps.download === undefined &&
+      anchorProps.target === undefined &&
+      !/\.[a-z0-9]+$/i.test(href);
     if (isRoute) {
       return (
         <Link href={href} className={classes} {...anchorProps}>

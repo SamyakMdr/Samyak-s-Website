@@ -6,6 +6,7 @@ export const HEADER_HEIGHT = 56;
 
 interface LenisLike {
   scrollTo(target: number, options?: { immediate?: boolean; lock?: boolean }): void;
+  resize(): void;
   raf(time: number): void;
   on(event: "scroll", callback: () => void): () => void;
 }
@@ -71,12 +72,6 @@ export function attachTicker(next: Ticker): void {
  */
 export function registerAnchor(id: string, getY: () => number): () => void {
   anchors.set(id, getY);
-  // A jump requested before this section was ready (e.g. arriving on Home from
-  // another page, before the pinned intro has been set up) is replayed now.
-  if (pending && pending.id === id && performance.now() < pending.until) {
-    scrollToY(getY(), { immediate: true });
-    pending = null;
-  }
   return () => {
     if (anchors.get(id) === getY) anchors.delete(id);
   };
@@ -89,8 +84,14 @@ export function prefersReducedMotion(): boolean {
 export function scrollToY(y: number, { immediate = false }: ScrollOptions = {}): void {
   const instant = immediate || prefersReducedMotion();
   const top = Math.max(0, Math.round(y));
-  if (lenis) lenis.scrollTo(top, { immediate: instant });
-  else window.scrollTo({ top, behavior: instant ? "instant" : "smooth" });
+  if (lenis) {
+    // Lenis measures the page lazily; a stale height would clamp the target
+    // right after a route change or the intro pin being set up.
+    lenis.resize();
+    lenis.scrollTo(top, { immediate: instant });
+  } else {
+    window.scrollTo({ top, behavior: instant ? "instant" : "smooth" });
+  }
 }
 
 /** Scrolls to a section by id. Returns false when the id is not on this page. */
@@ -106,10 +107,36 @@ export function scrollToId(id: string, options?: ScrollOptions): boolean {
   return true;
 }
 
-/** Jumps to a section now, and again if it registers itself shortly after. */
+// How long a requested jump may still be replayed after the layout settles.
+const REPLAY_WINDOW = 8000;
+const TAKEOVER_EVENTS = ["wheel", "touchstart", "keydown"] as const;
+
+function forgetAnchor(): void {
+  pending = null;
+}
+
+/**
+ * Jumps to a section now and remembers it: arriving on Home with a hash, the
+ * pinned intro is set up a moment later and pushes everything below it down.
+ * Scrolling by hand cancels the replay.
+ */
 export function requestAnchor(id: string): void {
-  pending = { id, until: performance.now() + 2500 };
+  pending = { id, until: performance.now() + REPLAY_WINDOW };
+  for (const type of TAKEOVER_EVENTS) {
+    window.addEventListener(type, forgetAnchor, { once: true, passive: true });
+  }
   scrollToId(id, { immediate: true });
+}
+
+/** Repeats the remembered jump once the layout above it has changed. */
+export function replayAnchor(): void {
+  if (!pending || performance.now() > pending.until) return;
+  scrollToId(pending.id, { immediate: true });
+}
+
+/** Drops any smooth scroll still in flight, e.g. when the route changes. */
+export function settleScroll(): void {
+  lenis?.scrollTo(window.scrollY, { immediate: true });
 }
 
 export function scrollToTop(options?: ScrollOptions): void {

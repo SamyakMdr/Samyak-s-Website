@@ -37,13 +37,16 @@ export function ProjectGrid() {
     setFilter("all");
   };
 
-  const prompt = { value: query, onChange: setQuery, label: projectsPage.searchLabel };
-
   return (
     <>
       <div className="page-x flex flex-col gap-3 pb-5 tablet:gap-4 tablet:pb-8">
-        <TerminalPrompt {...prompt} placeholder={projectsPage.searchPlaceholder} className="h-11 max-tablet:hidden" />
-        <TerminalPrompt {...prompt} placeholder={projectsPage.searchPlaceholderMobile} className="h-11 tablet:hidden" />
+        <TerminalPrompt
+          value={query}
+          onChange={setQuery}
+          label={projectsPage.searchLabel}
+          placeholder={projectsPage.searchPlaceholder}
+          placeholderMobile={projectsPage.searchPlaceholderMobile}
+        />
 
         <div className="flex items-start gap-2 desktop:items-center max-tablet:-mr-(--page-x)">
           {/* Mobile: one row that swipes sideways and bleeds off the right edge.
@@ -74,7 +77,7 @@ export function ProjectGrid() {
           <ul className="grid grid-cols-1 gap-4 tablet:grid-cols-2 tablet:gap-x-5 tablet:gap-y-6 desktop:grid-cols-3">
             {visible.map((project, index) => (
               <li key={project.slug}>
-                <ProjectCard project={project} layout="grid" mobileSummary eager={index < 3} />
+                <ProjectCard project={project} layout="grid" mobileSummary eager={index < 3} titleAs="h2" />
               </li>
             ))}
           </ul>

@@ -1,9 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { terminalCopy } from "@/content/commands";
 import { getProject, projectHref } from "@/content/projects";
 import type { OutputLine } from "@/lib/commands";
@@ -123,9 +125,9 @@ export function TerminalOutput({ entries, onRun }: { entries: TerminalEntry[]; o
   const reducedMotion = useReducedMotion();
 
   return (
-    <>
+    <MotionProvider>
       {entries.map((entry) => (
-        <motion.div
+        <m.div
           key={entry.id}
           initial={reducedMotion ? false : { opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
@@ -141,8 +143,8 @@ export function TerminalOutput({ entries, onRun }: { entries: TerminalEntry[]; o
               <Line line={line} onRun={onRun} />
             </Fragment>
           ))}
-        </motion.div>
+        </m.div>
       ))}
-    </>
+    </MotionProvider>
   );
 }

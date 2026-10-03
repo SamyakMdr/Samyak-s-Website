@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CommandProvider } from "@/lib/commands";
+import { Components } from "./_sections/Components";
 import { Foundations } from "./_sections/Foundations";
 
 export const metadata: Metadata = {
@@ -14,9 +16,13 @@ export default function DevUiPage() {
   }
 
   return (
-    <main className="page-x flex flex-col gap-16 py-12">
-      <h1 className="t-h1">UI kit</h1>
-      <Foundations />
-    </main>
+    // The terminal and hint chips need the command registry, as on the site.
+    <CommandProvider>
+      <main className="page-x flex flex-col gap-16 py-12">
+        <h1 className="t-h1">UI kit</h1>
+        <Foundations />
+        <Components />
+      </main>
+    </CommandProvider>
   );
 }

@@ -16,6 +16,7 @@ export function Cover({ project, className }: { project: Project; className?: st
         alt={project.coverAlt}
         fill
         preload
+        fetchPriority="high"
         sizes="(min-width: 1200px) 1120px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
         className="object-cover"
       />

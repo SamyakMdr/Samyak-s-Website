@@ -5,7 +5,7 @@ import { ArrowRightIcon } from "@/components/icons";
 import { BranchTag } from "@/components/ui/BranchTag";
 import { TechLogo } from "@/components/ui/TechLogo";
 import { projectHref } from "@/content/projects";
-import { projectsSection } from "@/content/site";
+import { a11y, projectsSection } from "@/content/site";
 import type { Project } from "@/content/types";
 import { cn } from "@/lib/cn";
 
@@ -21,6 +21,8 @@ type ProjectCardProps = {
   eager?: boolean;
   /** Use the shorter mobile summary where Figma defines one. */
   mobileSummary?: boolean;
+  /** Heading level of the title: h3 under a section H2, h2 directly under a page H1. */
+  titleAs?: "h2" | "h3";
   className?: string;
 };
 
@@ -38,6 +40,7 @@ export function ProjectCard({
   highlight = false,
   eager = false,
   mobileSummary = false,
+  titleAs: Title = "h3",
   className,
 }: ProjectCardProps) {
   const feature = layout === "feature";
@@ -45,7 +48,7 @@ export function ProjectCard({
   return (
     <Link
       href={projectHref(project)}
-      aria-label={`Open ${project.title} project`}
+      aria-label={a11y.openProject(project.title)}
       data-cursor="card"
       style={{ "--project": project.color } as CSSProperties}
       className={cn(
@@ -69,6 +72,7 @@ export function ProjectCard({
           fill
           sizes={feature ? SIZES[width] : SIZES.grid}
           loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : undefined}
           className="object-cover"
         />
         <span className="t-mono-sm absolute top-3.25 left-3.25 rounded-full bg-cover-pill/80 px-2.5 py-1 leading-[normal] whitespace-nowrap text-on-accent">
@@ -77,7 +81,7 @@ export function ProjectCard({
       </div>
 
       <div className={cn("flex flex-1 flex-col gap-2.5", feature ? "px-1 pt-1" : "px-4.5 pt-4 pb-4.5")}>
-        <h3 className="t-h3 text-fg">{project.title}</h3>
+        <Title className="t-h3 text-fg">{project.title}</Title>
         <p className="t-body-sm text-dim">
           {mobileSummary && project.summaryMobile ? (
             <>

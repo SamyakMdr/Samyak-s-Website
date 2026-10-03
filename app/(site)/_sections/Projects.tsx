@@ -54,7 +54,12 @@ export function Projects() {
       </div>
 
       <div className="flex flex-col gap-5 tablet:hidden">
-        <ProjectCarousel projects={featuredProjects} label={projectsSection.title} />
+        <ProjectCarousel
+          label={projectsSection.title}
+          slides={featuredProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} layout="feature" mobileSummary />
+          ))}
+        />
         <Button href="/projects" variant="secondary" fullWidth className="py-3.5">
           {projectsSection.viewAll}
         </Button>

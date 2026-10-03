@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { MouseIcon } from "@/components/icons";
-import { hero, terminalSection } from "@/content/site";
+import { a11y, hero, terminalSection } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { INTRO_QUERY, loadMotion } from "@/lib/gsap";
-import { registerAnchor, scrollToY } from "@/lib/scroll";
+import { registerAnchor, replayAnchor, scrollToY } from "@/lib/scroll";
 
 type HorizontalIntroProps = {
   hero: ReactNode;
@@ -63,6 +63,21 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
 
       const media = gsap.matchMedia();
       media.add(INTRO_QUERY, () => {
+        // Pinning wraps the section in a spacer, now and on every refresh. That
+        // re-parents it, which drops focus from the terminal, and adds the pin's
+        // scroll distance above every section below, which moves a pending hash jump.
+        let focused: HTMLElement | null = null;
+        const beforeRefresh = () => {
+          const active = document.activeElement;
+          focused = active instanceof HTMLElement && root.contains(active) ? active : null;
+        };
+        const afterRefresh = () => {
+          if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+          focused = null;
+          replayAnchor();
+        };
+
+        beforeRefresh();
         const tween = gsap.to(strip, {
           // One panel width: the visible width, which excludes a classic scrollbar.
           x: () => -root.clientWidth,
@@ -89,6 +104,9 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
 
         const offMain = registerAnchor("main", () => trigger.start);
         const offTerminal = registerAnchor("terminal", () => trigger.end);
+        afterRefresh();
+        ScrollTrigger.addEventListener("refreshInit", beforeRefresh);
+        ScrollTrigger.addEventListener("refresh", afterRefresh);
 
         // ↓ → Space step forward to the terminal, ↑ ← step back to the hero.
         const onKeyDown = (event: KeyboardEvent) => {
@@ -112,6 +130,8 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
 
         return () => {
           window.removeEventListener("keydown", onKeyDown);
+          ScrollTrigger.removeEventListener("refreshInit", beforeRefresh);
+          ScrollTrigger.removeEventListener("refresh", afterRefresh);
           offMain();
           offTerminal();
           bounds.current = null;
@@ -144,7 +164,7 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
   return (
     <div ref={section} className="intro overflow-x-clip">
       <div ref={track} className="intro-track flex flex-col">
-        <section id="main" aria-label="Introduction" className="intro-panel page-x relative pt-5 pb-3 tablet:pt-6 tablet:pb-12">
+        <section id="main" aria-label={a11y.introduction} className="intro-panel page-x relative pt-5 pb-3 tablet:pt-6 tablet:pb-12">
           {heroPanel}
           <ScrollCue label={hero.cue} arrow="→" step={0} onClick={goToTerminal} />
         </section>

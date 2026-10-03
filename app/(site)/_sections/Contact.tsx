@@ -6,7 +6,7 @@ import { AvailabilityBadge } from "@/components/ui/AvailabilityBadge";
 import { TechLogo } from "@/components/ui/TechLogo";
 import { contactCard, contactSection, socials } from "@/content/contact";
 import { cn } from "@/lib/cn";
-import { ContactForm } from "./ContactForm";
+import { ContactFormLazy } from "./ContactFormLazy";
 
 function ContactCard() {
   return (
@@ -65,7 +65,7 @@ export function Contact() {
       />
       <div className="flex flex-col gap-5 desktop:flex-row desktop:items-start desktop:gap-6">
         <ContactCard />
-        <ContactForm className="min-w-0 desktop:flex-1" />
+        <ContactFormLazy className="min-w-0 desktop:flex-1" />
       </div>
     </section>
   );

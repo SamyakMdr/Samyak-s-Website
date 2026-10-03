@@ -1,10 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useId, useRef } from "react";
 import { slashMenu, terminalCopy } from "@/content/commands";
+import { a11y } from "@/content/site";
 import { cn } from "@/lib/cn";
-import { TerminalOutput } from "./TerminalOutput";
+
 import { Caret, TerminalWindow } from "./TerminalWindow";
 import { useTerminal } from "./useTerminal";
 
@@ -19,6 +21,11 @@ function Swap({ desktop, mobile }: { desktop: string; mobile?: string }) {
     </>
   );
 }
+
+// Output only exists after a command has run, so its code (and the animation
+// library it uses) is fetched when the prompt is first focused.
+const loadOutput = () => import("./TerminalOutput").then((module) => module.TerminalOutput);
+const TerminalOutput = dynamic(loadOutput, { ssr: false });
 
 export function InteractiveTerminal({ className }: { className?: string }) {
   const terminal = useTerminal(slashMenu);
@@ -64,14 +71,14 @@ export function InteractiveTerminal({ className }: { className?: string }) {
           ref={log}
           role="log"
           aria-live="polite"
-          aria-label="Terminal output"
+          aria-label={a11y.terminalOutput}
           data-lenis-prevent
           className={cn(
             "thin-scroll flex min-h-0 flex-col gap-2 overflow-y-auto",
             entries.length === 0 ? "hidden" : "max-desktop:max-h-64 desktop:flex-1",
           )}
         >
-          <TerminalOutput entries={entries} onRun={terminal.submit} />
+          {entries.length > 0 && <TerminalOutput entries={entries} onRun={terminal.submit} />}
         </div>
 
         <form
@@ -100,7 +107,10 @@ export function InteractiveTerminal({ className }: { className?: string }) {
               value={input}
               onChange={(event) => terminal.change(event.target.value)}
               onKeyDown={terminal.onKeyDown}
-              onFocus={terminal.noteTerminalUse}
+              onFocus={() => {
+                terminal.noteTerminalUse();
+                void loadOutput();
+              }}
               role="combobox"
               aria-expanded={menuOpen}
               aria-controls={listId}
@@ -119,7 +129,7 @@ export function InteractiveTerminal({ className }: { className?: string }) {
         <ul
           id={listId}
           role="listbox"
-          aria-label="Commands"
+          aria-label={a11y.commands}
           className={cn("flex shrink-0 flex-col gap-0.5 px-1.5 max-tablet:px-0", !menuOpen && "hidden")}
         >
           {menu.map((item, index) => {

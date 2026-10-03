@@ -1,18 +1,19 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuIcon, TerminalIcon } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 import { Kbd } from "@/components/ui/Kbd";
 import { NavTab } from "@/components/ui/NavTab";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { header, hero, nav } from "@/content/site";
+import { a11y, header, hero, nav } from "@/content/site";
 import { useCommands } from "@/lib/commands";
 import { useIsApple } from "@/lib/platform";
 import { useActiveSection } from "@/lib/useActiveSection";
 import { Brand } from "./Brand";
-import { MobileMenu } from "./MobileMenu";
+
 
 // Which header tab each Home section lights up. Sections without a tab
 // (education, services, cv) leave every tab idle.
@@ -30,11 +31,32 @@ const SECTION_TAB: Record<string, string | null> = {
 };
 const SECTION_IDS = Object.keys(SECTION_TAB);
 
+// The menu (and its animation code) is only needed below the desktop breakpoint,
+// and only once it is opened, so it is fetched when the browser is idle there.
+const loadMobileMenu = () => import("./MobileMenu");
+const MobileMenu = dynamic(loadMobileMenu, { ssr: false });
+const MENU_QUERY = "(max-width: 1199px)";
+
 export function SiteHeader() {
   const pathname = usePathname();
   const onHome = pathname === "/";
   const section = useActiveSection(SECTION_IDS, onHome);
   const [menuOpen, setMenuOpen] = useState(false);
+  // Mounted on first open and kept, so the closing animation can play.
+  const [menuMounted, setMenuMounted] = useState(false);
+
+  useEffect(() => {
+    if (!window.matchMedia(MENU_QUERY).matches) return;
+    const idle = window.requestIdleCallback ?? ((run: () => void) => window.setTimeout(run, 1500));
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout;
+    const handle = idle(() => void loadMobileMenu());
+    return () => cancel(handle);
+  }, []);
+
+  const openMenu = () => {
+    setMenuMounted(true);
+    setMenuOpen(true);
+  };
   const { focusTerminal } = useCommands();
   const apple = useIsApple();
 
@@ -46,8 +68,9 @@ export function SiteHeader() {
       ? "feature/projects"
       : null;
 
+  // 40px as drawn; the pseudo-element widens the tap target to 44px.
   const iconButton =
-    "flex size-10 shrink-0 items-center justify-center rounded-btn border border-line bg-panel text-fg transition-colors duration-(--dur-ui) ease-ui hover:bg-panel-hover";
+    "relative flex size-10 shrink-0 items-center justify-center rounded-btn border border-line bg-panel text-fg transition-colors duration-(--dur-ui) ease-ui before:absolute before:-inset-0.5 before:content-[''] hover:bg-panel-hover";
 
   return (
     <>
@@ -55,7 +78,7 @@ export function SiteHeader() {
         <div className="page-x flex h-full items-center gap-2 desktop:gap-3.5">
           <Brand />
 
-          <nav aria-label="Sections" className="flex items-start gap-1 max-desktop:hidden">
+          <nav aria-label={a11y.sections} className="flex items-start gap-1 max-desktop:hidden">
             {nav.map((item) => (
               <NavTab key={item.branch} label={item.branch} href={item.href} active={item.branch === activeBranch} />
             ))}
@@ -84,7 +107,7 @@ export function SiteHeader() {
             </button>
             <button
               type="button"
-              onClick={() => setMenuOpen(true)}
+              onClick={openMenu}
               aria-label={header.openMenu}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
@@ -96,7 +119,9 @@ export function SiteHeader() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} activeBranch={activeBranch ?? null} />
+      {menuMounted && (
+        <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} activeBranch={activeBranch ?? null} />
+      )}
     </>
   );
 }

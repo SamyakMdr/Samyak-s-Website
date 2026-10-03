@@ -9,6 +9,9 @@ export default defineConfig({
   reporter: [["list"]],
   use: {
     baseURL: `http://localhost:${PORT}`,
+    // Linux Chromium hints fonts, which shifts text wrapping away from the Figma
+    // frames. Turning it off matches how macOS and Windows lay the text out.
+    launchOptions: { args: ["--font-render-hinting=none"] },
   },
   webServer: {
     command: `npm run build && npm run start -- -p ${PORT}`,

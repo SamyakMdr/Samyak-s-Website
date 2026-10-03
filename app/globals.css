@@ -408,6 +408,8 @@
 @layer base {
   html {
     background: var(--bg);
+    /* Native hash jumps and focus scrolling stop below the fixed header. */
+    scroll-padding-top: var(--header-h);
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -699,5 +701,31 @@ html.custom-cursor * {
 
   .room-packet-back {
     animation-name: room-packet-back;
+  }
+}
+
+/* Mobile stack slider: a slow CSS drift, so phones never load GSAP. The track
+   holds its list twice, which makes -50% exactly one loop. */
+@keyframes stack-drift {
+  from {
+    transform: translate3d(var(--stack-offset, 0px), 0, 0);
+  }
+  to {
+    transform: translate3d(calc(var(--stack-offset, 0px) - 50%), 0, 0);
+  }
+}
+
+/* Paused until the slider is on screen: StackSliderMotion sets data-active. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .stack-drift-left {
+    animation: stack-drift 28s linear infinite paused;
+  }
+
+  .stack-drift-right {
+    animation: stack-drift 28s linear infinite reverse paused;
+  }
+
+  [data-active] :is(.stack-drift-left, .stack-drift-right) {
+    animation-play-state: running;
   }
 }

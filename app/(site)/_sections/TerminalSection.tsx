@@ -16,8 +16,9 @@ export function TerminalSection() {
       />
       <div className="flex flex-col gap-6 desktop:flex-row desktop:items-start">
         <InteractiveTerminal className="min-w-0 desktop:h-125.75 desktop:flex-1" />
-        {/* Desktop only: same height as the terminal, scrolls inside. */}
-        <ShortcutsCard className="h-125.75 w-85 shrink-0 max-desktop:hidden" />
+        {/* Desktop: same height as the terminal, scrolls inside. Tablet (not
+            designed): below the terminal at its natural height. Hidden on mobile. */}
+        <ShortcutsCard className="max-tablet:hidden desktop:h-125.75 desktop:w-85 desktop:shrink-0" />
       </div>
       <Hints label={terminalSection.hintsLabel} commands={hints} />
     </div>
