@@ -147,11 +147,15 @@ export default function MobileMenu({ open, onClose, activeBranch }: MobileMenuPr
                 </div>
               </div>
 
-              <ul className="flex gap-2.5">
+              <ul className="-ml-2 flex gap-1">
                 {socials.map((social) => (
                   <li key={social.name}>
-                    <a href={social.href} aria-label={social.name} className="block rounded-btn">
-                      <TechLogo name={social.name} size={40} />
+                    <a
+                      href={social.href}
+                      aria-label={social.name}
+                      className="flex size-10 items-center justify-center rounded-btn text-fg"
+                    >
+                      <TechLogo name={social.name} size={24} mono />
                     </a>
                   </li>
                 ))}

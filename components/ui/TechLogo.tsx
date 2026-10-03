@@ -10,13 +10,27 @@ type TechLogoProps = {
   ring?: boolean;
   /** Set when the logo stands alone and needs an accessible name. */
   labelled?: boolean;
+  /** One-colour mark from public/logos/mono, drawn in the text colour of its theme. */
+  mono?: boolean;
   className?: string;
 };
 
-export function TechLogo({ name, size = 40, ring = false, labelled = false, className }: TechLogoProps) {
+export function TechLogo({ name, size = 40, ring = false, labelled = false, mono = false, className }: TechLogoProps) {
   const entry: Tech = tech[name];
   const { slug, monogram, tile, ink } = entry;
   const a11y = labelled ? { role: "img", "aria-label": name } : { "aria-hidden": true };
+
+  if (mono) {
+    // The file is only a shape: it masks a block of the current text colour.
+    const mask = `url(/logos/mono/${slug}.svg) center / contain no-repeat`;
+    return (
+      <span
+        {...a11y}
+        className={cn("inline-block shrink-0 bg-current", className)}
+        style={{ width: size, height: size, mask, WebkitMask: mask }}
+      />
+    );
+  }
 
   if (entry.logo) {
     const src = `/logos/${slug}.${entry.logo === "png" ? "png" : "svg"}`;

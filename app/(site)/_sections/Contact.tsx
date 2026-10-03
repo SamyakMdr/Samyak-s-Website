@@ -33,11 +33,16 @@ function ContactCard() {
       {/* The mobile card goes straight from the rows to the social logos. */}
       <span aria-hidden="true" className="h-px shrink-0 bg-line max-tablet:hidden" />
       <h3 className="t-h4 text-fg max-tablet:hidden">{contactCard.socialsTitle}</h3>
-      <ul aria-label={contactCard.socialsTitle} className="flex gap-2.5">
+      {/* 24px marks in 40px tap areas; the row is pulled left so the first mark lines up with the text. */}
+      <ul aria-label={contactCard.socialsTitle} className="-ml-2 flex gap-1">
         {socials.map((social) => (
           <li key={social.name}>
-            <a href={social.href} aria-label={social.name} className="block rounded-btn">
-              <TechLogo name={social.name} size={40} />
+            <a
+              href={social.href}
+              aria-label={social.name}
+              className="flex size-10 items-center justify-center rounded-btn text-fg transition-colors duration-(--dur-ui) ease-ui hover:text-dim"
+            >
+              <TechLogo name={social.name} size={24} mono />
             </a>
           </li>
         ))}
