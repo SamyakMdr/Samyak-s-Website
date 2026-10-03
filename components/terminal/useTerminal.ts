@@ -122,14 +122,20 @@ export function useTerminal(menuItems: SlashItem[]) {
           return;
         }
         case "Tab": {
+          // Tab is only taken while it adds to what is typed. Otherwise, and for
+          // Shift+Tab, focus moves on, so the prompt never traps the keyboard.
+          if (event.shiftKey) return;
+          let completed = input;
           if (menuOpen && item) {
-            event.preventDefault();
             // `/open <name>` completes to "/open " so a project can be typed.
-            change(item.command.includes("<") ? `${item.command.split(" ")[0]} ` : item.command);
+            const command = item.command.includes("<") ? `${item.command.split(" ")[0]} ` : item.command;
+            if (command.toLowerCase().startsWith(input.toLowerCase())) completed = command;
           } else if (suggestion) {
-            event.preventDefault();
-            change(input + suggestion);
+            completed = input + suggestion;
           }
+          if (completed === input) return;
+          event.preventDefault();
+          change(completed);
           return;
         }
         case "Enter": {

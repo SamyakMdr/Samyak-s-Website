@@ -1,18 +1,26 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 
 // False until the first page has mounted in this tab.
 let navigated = false;
 
-// Remounted on every navigation, so each page dissolves in (250ms). The first
-// load is left alone: content that starts transparent would paint late.
+// Every navigation dissolves the new page in (250ms). The first load is left
+// alone: content that starts transparent would paint late. The key covers moves
+// that keep this template mounted (the project list to a room, room to room).
 export default function SiteTemplate({ children }: { children: ReactNode }) {
-  const [dissolve] = useState(() => navigated);
+  const pathname = usePathname();
+  const [mount] = useState(() => ({ afterNavigation: navigated, pathname }));
+  const dissolve = mount.afterNavigation || pathname !== mount.pathname;
 
   useEffect(() => {
     navigated = true;
   }, []);
 
-  return <div className={dissolve ? "animate-page-in" : undefined}>{children}</div>;
+  return (
+    <div key={pathname} className={dissolve ? "animate-page-in" : undefined}>
+      {children}
+    </div>
+  );
 }

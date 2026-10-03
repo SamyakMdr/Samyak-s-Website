@@ -128,7 +128,21 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
         };
         window.addEventListener("keydown", onKeyDown);
 
+        // Tabbing can put focus in the panel that is off to the side; slide it in.
+        const onFocusIn = (event: FocusEvent) => {
+          const { target } = event;
+          if (!(target instanceof Element) || !target.matches(":focus-visible")) return;
+          const y = window.scrollY;
+          if (target.closest("#terminal")) {
+            if (y < trigger.end - 1) scrollToY(trigger.end);
+          } else if (y > trigger.start + 1) {
+            scrollToY(trigger.start);
+          }
+        };
+        root.addEventListener("focusin", onFocusIn);
+
         return () => {
+          root.removeEventListener("focusin", onFocusIn);
           window.removeEventListener("keydown", onKeyDown);
           ScrollTrigger.removeEventListener("refreshInit", beforeRefresh);
           ScrollTrigger.removeEventListener("refresh", afterRefresh);
