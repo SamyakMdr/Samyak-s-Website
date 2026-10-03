@@ -5,6 +5,7 @@ import { MouseIcon } from "@/components/icons";
 import { a11y, hero, terminalSection } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { INTRO_QUERY, loadMotion } from "@/lib/gsap";
+import { stepBetween, type Steps } from "@/lib/introSteps";
 import { registerAnchor, replayAnchor, scrollToY } from "@/lib/scroll";
 
 type HorizontalIntroProps = {
@@ -33,13 +34,15 @@ function ScrollCue({ label, arrow, step, onClick }: { label: string; arrow: stri
 }
 
 // Sideways intro (desktop ≥ 1200, no reduced motion): the section is pinned and
-// about one viewport of scrolling slides the track 100vw to the left, bringing
-// the terminal in from the right. Everywhere else the two panels simply stack.
+// scrolling slides the track 100vw to the left, bringing the terminal in from
+// the right. It moves in whole steps: any scroll goes all the way to the other
+// panel. Everywhere else the two panels simply stack.
 export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: HorizontalIntroProps) {
   const section = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   // Scroll positions of the two panels while pinned; null when stacked.
   const bounds = useRef<{ start: number; end: number } | null>(null);
+  const steps = useRef<Steps | null>(null);
 
   useEffect(() => {
     const root = section.current;
@@ -85,7 +88,8 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
           scrollTrigger: {
             trigger: root,
             pin: true,
-            scrub: 0.8,
+            // Tied straight to the scroll position: the step's own easing is the motion.
+            scrub: true,
             start: "top top+=56",
             end: () => `+=${window.innerWidth}`,
             anticipatePin: 1,
@@ -108,25 +112,9 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
         ScrollTrigger.addEventListener("refreshInit", beforeRefresh);
         ScrollTrigger.addEventListener("refresh", afterRefresh);
 
-        // ↓ → Space step forward to the terminal, ↑ ← step back to the hero.
-        const onKeyDown = (event: KeyboardEvent) => {
-          const target = event.target as HTMLElement | null;
-          if (target?.closest("input, textarea, select, [contenteditable=true]")) return;
-          if (event.metaKey || event.ctrlKey || event.altKey) return;
-          const y = window.scrollY;
-          const inside = y >= trigger.start - 1 && y <= trigger.end + 1;
-          if (!inside) return;
-          const forward = ["ArrowDown", "ArrowRight", " "].includes(event.key) && !event.shiftKey;
-          const back = ["ArrowUp", "ArrowLeft"].includes(event.key) || (event.key === " " && event.shiftKey);
-          if (forward && y < trigger.end - 1) {
-            event.preventDefault();
-            scrollToY(trigger.end);
-          } else if (back && y > trigger.start + 1) {
-            event.preventDefault();
-            scrollToY(trigger.start);
-          }
-        };
-        window.addEventListener("keydown", onKeyDown);
+        // Wheel, keys (↓ → Space PageDown, ↑ ← PageUp) and touch all move one whole panel.
+        const stepper = stepBetween({ start: () => trigger.start, end: () => trigger.end });
+        steps.current = stepper;
 
         // Tabbing can put focus in the panel that is off to the side; slide it in.
         const onFocusIn = (event: FocusEvent) => {
@@ -134,16 +122,17 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
           if (!(target instanceof Element) || !target.matches(":focus-visible")) return;
           const y = window.scrollY;
           if (target.closest("#terminal")) {
-            if (y < trigger.end - 1) scrollToY(trigger.end);
+            if (y < trigger.end - 1) stepper.forward();
           } else if (y > trigger.start + 1) {
-            scrollToY(trigger.start);
+            stepper.back();
           }
         };
         root.addEventListener("focusin", onFocusIn);
 
         return () => {
           root.removeEventListener("focusin", onFocusIn);
-          window.removeEventListener("keydown", onKeyDown);
+          stepper.dispose();
+          steps.current = null;
           ScrollTrigger.removeEventListener("refreshInit", beforeRefresh);
           ScrollTrigger.removeEventListener("refresh", afterRefresh);
           offMain();
@@ -168,9 +157,7 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
     };
   }, []);
 
-  const goToTerminal = () => {
-    if (bounds.current) scrollToY(bounds.current.end);
-  };
+  const goToTerminal = () => steps.current?.forward();
   const goPast = () => {
     if (bounds.current) scrollToY(bounds.current.end + window.innerHeight * 0.6);
   };

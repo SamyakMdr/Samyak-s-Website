@@ -5,7 +5,18 @@
 export const HEADER_HEIGHT = 56;
 
 interface LenisLike {
-  scrollTo(target: number, options?: { immediate?: boolean; lock?: boolean }): void;
+  /** Where a smooth scroll in flight is heading. */
+  targetScroll: number;
+  scrollTo(
+    target: number,
+    options?: {
+      immediate?: boolean;
+      lock?: boolean;
+      duration?: number;
+      easing?: (progress: number) => number;
+      onComplete?: () => void;
+    },
+  ): void;
   resize(): void;
   raf(time: number): void;
   on(event: "scroll", callback: () => void): () => void;
@@ -91,6 +102,46 @@ export function scrollToY(y: number, { immediate = false }: ScrollOptions = {}):
     lenis.scrollTo(top, { immediate: instant });
   } else {
     window.scrollTo({ top, behavior: instant ? "instant" : "smooth" });
+  }
+}
+
+/** Where the page is heading: ahead of scrollY while a smooth scroll is in flight. */
+export function scrollTarget(): number {
+  return lenis ? lenis.targetScroll : window.scrollY;
+}
+
+const GLIDE_SECONDS = 0.85;
+// Longest a glide may take to report that it has landed.
+const GLIDE_TIMEOUT = 1500;
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+/**
+ * A fixed-length eased scroll that cannot be interrupted: wheel and touch are
+ * ignored until it lands, then `onLand` runs once. The sideways intro uses it,
+ * because there is nowhere to stop between its two panels.
+ */
+export function glideTo(y: number, onLand: () => void): void {
+  const top = Math.max(0, Math.round(y));
+  let landed = false;
+  const land = () => {
+    if (landed) return;
+    landed = true;
+    window.clearTimeout(timer);
+    window.removeEventListener("scrollend", land);
+    onLand();
+  };
+  // Covers a browser without "scrollend" and a scroller that refuses the move.
+  const timer = window.setTimeout(land, GLIDE_TIMEOUT);
+
+  if (lenis) {
+    lenis.resize();
+    lenis.scrollTo(top, { lock: true, duration: GLIDE_SECONDS, easing: easeInOut, onComplete: land });
+  } else if (Math.abs(window.scrollY - top) < 1) {
+    land();
+  } else {
+    // Native scrolling: the browser picks the timing and reports the landing.
+    window.addEventListener("scrollend", land);
+    window.scrollTo({ top, behavior: "smooth" });
   }
 }
 
