@@ -51,7 +51,7 @@ export type TechName = keyof typeof tech;
 export const stackRows: { forward: TechName[]; backward: TechName[] } = {
   forward: [
     "TypeScript", "React", "Next.js", "NestJS", "Node.js", "PostgreSQL",
-    "Prisma", "Tailwind CSS", "Docker", "Git", "GitHub", "Ubuntu",
+    "Prisma", "Tailwind CSS", "Docker", "Git", "GitHub", "Linux",
   ],
   backward: [
     "Python", "FastAPI", "Redis", "TypeORM", "Nginx", "Cloudflare",

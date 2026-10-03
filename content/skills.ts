@@ -28,12 +28,12 @@ export const skillGroups: SkillGroup[] = [
   {
     title: "Backend",
     description: "APIs with clear rules for who can do what.",
-    tools: ["Node.js", "Python", "FastAPI", "PHP"],
+    tools: ["Node.js", "NestJS", "Python", "FastAPI", "PHP"],
   },
   {
     title: "Databases",
     description: "Data models, migrations and queries that stay quick.",
-    tools: ["PostgreSQL", "MySQL", "MongoDB", "Prisma", "TypeORM"],
+    tools: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Prisma", "TypeORM"],
   },
   {
     title: "DevOps and tools",
