@@ -22,7 +22,8 @@ export const skillGroups: SkillGroup[] = [
     description: "Interfaces that load fast and work on any screen size.",
     tools: [
       "React", "Next.js", "React Native", "TypeScript", "JavaScript",
-      "Tailwind CSS", "NativeWind", "Material UI", "Bootstrap", "Figma",
+      "Tailwind CSS", "NativeWind", "Material UI", "Bootstrap", "TanStack",
+      "jQuery", "Figma",
     ],
   },
   {

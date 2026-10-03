@@ -19,7 +19,7 @@ export function TechLogo({ name, size = 40, ring = false, labelled = false, clas
   const a11y = labelled ? { role: "img", "aria-label": name } : { "aria-hidden": true };
 
   if (entry.logo) {
-    const src = `/logos/${slug}.svg`;
+    const src = `/logos/${slug}.${entry.logo === "png" ? "png" : "svg"}`;
     // Marks drawn in black or navy come with a light version for dark surfaces.
     const dark = entry.darkLogo ? `/logos/${slug}-dark.svg` : null;
     return (

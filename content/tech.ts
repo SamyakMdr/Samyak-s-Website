@@ -5,8 +5,8 @@ export interface Tech {
   monogram: string;
   tile: string;
   ink: string;
-  /** public/logos/<slug>.svg exists. */
-  logo?: boolean;
+  /** public/logos/<slug>.svg exists, or <slug>.png for a mark only published as an image. */
+  logo?: boolean | "png";
   /** public/logos/<slug>-dark.svg also exists: the drawing for dark surfaces, for marks whose colour only suits one theme. */
   darkLogo?: boolean;
 }
@@ -36,6 +36,8 @@ export const tech = {
   NativeWind: { slug: "nativewind", monogram: "Nw", tile: "#111111", ink: "#FFFFFF", logo: true },
   "Material UI": { slug: "materialui", monogram: "Mu", tile: "#007FFF", ink: "#FFFFFF", logo: true },
   Bootstrap: { slug: "bootstrap", monogram: "B", tile: "#7952B3", ink: "#FFFFFF", logo: true },
+  TanStack: { slug: "tanstack", monogram: "Tk", tile: "#111111", ink: "#FFFFFF", logo: "png" },
+  jQuery: { slug: "jquery", monogram: "jQ", tile: "#0769AD", ink: "#FFFFFF", logo: true },
   PHP: { slug: "php", monogram: "Ph", tile: "#777BB4", ink: "#FFFFFF", logo: true },
   MySQL: { slug: "mysql", monogram: "My", tile: "#4479A1", ink: "#FFFFFF", logo: true, darkLogo: true },
   MongoDB: { slug: "mongodb", monogram: "Mg", tile: "#47A248", ink: "#FFFFFF", logo: true },
