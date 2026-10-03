@@ -17,8 +17,8 @@ export function Hero() {
         <span className="t-mono-sm ml-auto text-dim tablet:hidden">{hero.fileMetaMobile}</span>
       </div>
 
-      <div className="flex flex-col gap-4.5 px-5 pt-6 pb-5.5 tablet:gap-8 tablet:p-12 desktop:flex-row desktop:items-center desktop:gap-12">
-        <div className="flex min-w-0 flex-1 flex-col items-start gap-4.5 tablet:gap-5.5">
+      <div className="hero-body flex flex-col gap-4.5 px-5 pt-6 pb-5.5 tablet:gap-8 tablet:p-12 desktop:flex-row desktop:items-center desktop:gap-12">
+        <div className="hero-copy flex min-w-0 flex-1 flex-col items-start gap-4.5 tablet:gap-5.5">
           <AvailabilityBadge>{hero.badge}</AvailabilityBadge>
           <h1 className="t-hero text-fg">{hero.title}</h1>
           <p className="flex flex-col gap-0.5 tablet:flex-row tablet:items-center tablet:gap-2.5">
@@ -26,8 +26,7 @@ export function Hero() {
             <span aria-hidden="true" className="size-1 rounded-full bg-dim max-tablet:hidden" />
             <span className="text-dim tablet:t-body max-tablet:t-body-sm">{site.location}</span>
           </p>
-          <p className="t-body-lg text-dim max-tablet:hidden">{hero.intro}</p>
-          <p className="t-body-lg text-dim tablet:hidden">{hero.introMobile}</p>
+          <p className="t-body-lg text-dim">{hero.intro}</p>
           <div className="flex flex-col gap-2.5 self-stretch tablet:flex-row tablet:items-start tablet:gap-3 tablet:self-auto">
             <Button href={hero.primary.href} variant="primary" icon="download" fullWidth="mobile">
               {hero.primary.label}

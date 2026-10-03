@@ -600,7 +600,7 @@
 
 /* Sideways intro. The side-by-side layout applies from first paint under the
    same media query GSAP uses, so nothing jumps when the pin is created. */
-@media (min-width: 1200px) and (min-height: 820px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1200px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
   .intro {
     height: calc(100svh - var(--header-h));
     overflow: clip;
@@ -634,6 +634,31 @@
 
   .intro-cue {
     display: flex;
+  }
+}
+
+/* Laptop screens shorter than the 900px Figma frame: the README card tightens
+   up so the whole first panel, buttons included, still fits one screen. */
+@media (min-width: 1200px) and (min-height: 700px) and (max-height: 819px) and (prefers-reduced-motion: no-preference) {
+  .intro-panel {
+    padding-top: 12px;
+  }
+
+  .intro-panel:first-child {
+    padding-bottom: 56px;
+  }
+
+  .hero-body {
+    padding-block: 28px;
+  }
+
+  .hero-copy {
+    gap: 14px;
+  }
+
+  .hero-copy .t-hero {
+    font-size: 48px;
+    line-height: 54px;
   }
 }
 

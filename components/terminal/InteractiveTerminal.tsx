@@ -130,7 +130,9 @@ export function InteractiveTerminal({ className }: { className?: string }) {
           id={listId}
           role="listbox"
           aria-label={a11y.commands}
-          className={cn("flex shrink-0 flex-col gap-0.5 px-1.5 max-tablet:px-0", !menuOpen && "hidden")}
+          data-lenis-prevent
+          // On a short screen the menu scrolls inside the terminal instead of spilling out.
+          className={cn("thin-scroll flex flex-col gap-0.5 px-1.5 max-tablet:px-0 desktop:min-h-0 desktop:overflow-y-auto", !menuOpen && "hidden")}
         >
           {menu.map((item, index) => {
             const active = index === activeIndex;

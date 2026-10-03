@@ -30,7 +30,7 @@ export function loadMotion(): Promise<Motion> {
 
 /** Desktop motion runs at ≥ 1200px, on screens tall enough for a full panel, without reduced motion. */
 export const INTRO_QUERY =
-  "(min-width: 1200px) and (min-height: 820px) and (prefers-reduced-motion: no-preference)";
+  "(min-width: 1200px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
 /** The stack slider is GSAP-driven from the tablet breakpoint up; mobile uses CSS. */
 export const SLIDER_QUERY = "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
 /** A real mouse or trackpad: smooth scrolling and the custom cursor. */
