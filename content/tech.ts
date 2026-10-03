@@ -46,6 +46,8 @@ export const tech = {
   LinkedIn: { slug: "linkedin", monogram: "in", tile: "#0A66C2", ink: "#FFFFFF", logo: true },
   X: { slug: "x", monogram: "X", tile: "#000000", ink: "#FFFFFF", logo: true, darkLogo: true },
   Instagram: { slug: "instagram", monogram: "Ig", tile: "#E4405F", ink: "#FFFFFF", logo: true },
+  // Only a one-colour mark (public/logos/mono), used by the social row.
+  Behance: { slug: "behance", monogram: "Be", tile: "#1769FF", ink: "#FFFFFF" },
   WhatsApp: { slug: "whatsapp", monogram: "Wa", tile: "#25D366", ink: "#FFFFFF", logo: true },
 } as const satisfies Record<string, Tech>;
 
