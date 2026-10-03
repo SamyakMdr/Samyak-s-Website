@@ -493,6 +493,25 @@
   display: none;
 }
 
+/* Brand logos with a light and a dark drawing follow the nearest theme, so a
+   forced-dark terminal inside a light page still gets the light-on-dark mark. */
+:root .logo-light,
+[data-theme="light"] .logo-dark {
+  display: none;
+}
+
+[data-theme="light"] .logo-light {
+  display: block;
+}
+
+[data-theme="dark"] .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark {
+  display: block;
+}
+
 /* Description starts at the single-line box drawn in Figma and grows with the
    message (see ContactForm) up to the 140px textarea in the component spec. */
 .field-grow {

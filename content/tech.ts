@@ -1,5 +1,6 @@
 // Brand logo slots (doc/assets.md §3). Until the official SVG is added at
 // public/logos/<slug>.svg, <TechLogo> shows the monogram on the tile colour.
+// A dark mark can add public/logos/<slug>-dark.svg, shown on dark surfaces.
 export interface Tech {
   slug: string;
   monogram: string;
@@ -28,6 +29,15 @@ export const tech = {
   Cloudflare: { slug: "cloudflare", monogram: "Cf", tile: "#F38020", ink: "#FFFFFF" },
   Nginx: { slug: "nginx", monogram: "Nx", tile: "#009639", ink: "#FFFFFF" },
   Redis: { slug: "redis", monogram: "Rd", tile: "#DC382D", ink: "#FFFFFF" },
+  "React Native": { slug: "reactnative", monogram: "RN", tile: "#149ECA", ink: "#FFFFFF" },
+  NativeWind: { slug: "nativewind", monogram: "Nw", tile: "#111111", ink: "#FFFFFF" },
+  "Material UI": { slug: "materialui", monogram: "Mu", tile: "#007FFF", ink: "#FFFFFF" },
+  Bootstrap: { slug: "bootstrap", monogram: "B", tile: "#7952B3", ink: "#FFFFFF" },
+  PHP: { slug: "php", monogram: "Ph", tile: "#777BB4", ink: "#FFFFFF" },
+  MySQL: { slug: "mysql", monogram: "My", tile: "#4479A1", ink: "#FFFFFF" },
+  MongoDB: { slug: "mongodb", monogram: "Mg", tile: "#47A248", ink: "#FFFFFF" },
+  GitLab: { slug: "gitlab", monogram: "GL", tile: "#FC6D26", ink: "#FFFFFF" },
+  Linux: { slug: "linux", monogram: "Lx", tile: "#FCC624", ink: "#1B1B1B" },
   LinkedIn: { slug: "linkedin", monogram: "in", tile: "#0A66C2", ink: "#FFFFFF" },
   X: { slug: "x", monogram: "X", tile: "#000000", ink: "#FFFFFF" },
   Instagram: { slug: "instagram", monogram: "Ig", tile: "#E4405F", ink: "#FFFFFF" },

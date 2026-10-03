@@ -19,17 +19,24 @@ export function TechLogo({ name, size = 40, ring = false, labelled = false, clas
   const a11y = labelled ? { role: "img", "aria-label": name } : { "aria-hidden": true };
 
   if (hasLogo(slug)) {
+    const src = `/logos/${slug}.svg`;
+    // Marks drawn in black or navy come with a light version for dark surfaces.
+    const dark = hasLogo(`${slug}-dark`) ? `/logos/${slug}-dark.svg` : null;
     return (
       <span
         {...a11y}
         className={cn(
-          "relative inline-flex shrink-0 overflow-hidden rounded-btn",
-          ring && "border-2 border-panel",
+          "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-btn",
+          // Stacked logos overlap, so they sit on the card colour.
+          ring && "border-2 border-panel bg-panel",
           className,
         )}
         style={{ width: size, height: size }}
       >
-        <Image src={`/logos/${slug}.svg`} alt="" width={size} height={size} unoptimized />
+        <Image src={src} alt="" width={size} height={size} unoptimized className={cn("size-full object-contain", dark && "logo-light")} />
+        {dark && (
+          <Image src={dark} alt="" width={size} height={size} unoptimized className="logo-dark size-full object-contain" />
+        )}
       </span>
     );
   }

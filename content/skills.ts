@@ -18,23 +18,26 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Frontend",
+    title: "Frontend and mobile",
     description: "Interfaces that load fast and work on any screen size.",
-    tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "JavaScript", "Figma"],
+    tools: [
+      "React", "Next.js", "React Native", "TypeScript", "JavaScript",
+      "Tailwind CSS", "NativeWind", "Material UI", "Bootstrap", "Figma",
+    ],
   },
   {
     title: "Backend",
     description: "APIs with clear rules for who can do what.",
-    tools: ["NestJS", "Node.js", "FastAPI", "Python"],
+    tools: ["Node.js", "Python", "FastAPI", "PHP"],
   },
   {
     title: "Databases",
     description: "Data models, migrations and queries that stay quick.",
-    tools: ["PostgreSQL", "Prisma", "TypeORM", "Redis"],
+    tools: ["PostgreSQL", "MySQL", "MongoDB", "Prisma", "TypeORM"],
   },
   {
     title: "DevOps and tools",
     description: "Servers, deployments and backups I can rely on.",
-    tools: ["Docker", "Ubuntu", "Nginx", "Cloudflare", "Git", "GitHub"],
+    tools: ["Docker", "Nginx", "Linux", "Cloudflare", "Git", "GitHub", "GitLab"],
   },
 ];
