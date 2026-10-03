@@ -4,6 +4,7 @@ import {
   Noto_Sans_Devanagari,
   Space_Grotesk,
 } from "next/font/google";
+import localFont from "next/font/local";
 
 export const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -35,9 +36,36 @@ export const notoDeva = Noto_Sans_Devanagari({
   variable: "--font-noto-deva",
 });
 
+// Google's "latin" subset drops a few glyphs the design uses as text: ← → in
+// IBM Plex Sans, and ← → ✓ in IBM Plex Mono. These tiny files (the same fonts,
+// cut down to those glyphs) follow the main family in the font stacks.
+export const plexSansArrows = localFont({
+  src: "../app/fonts/plex-sans-arrows.woff2",
+  weight: "100 700",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: false,
+  variable: "--font-plex-sans-arrows",
+  declarations: [{ prop: "unicode-range", value: "U+2190, U+2192" }],
+});
+
+export const plexMonoSymbols = localFont({
+  src: [
+    { path: "../app/fonts/plex-mono-symbols-400.woff2", weight: "400" },
+    { path: "../app/fonts/plex-mono-symbols-500.woff2", weight: "500" },
+  ],
+  display: "swap",
+  preload: false,
+  adjustFontFallback: false,
+  variable: "--font-plex-mono-symbols",
+  declarations: [{ prop: "unicode-range", value: "U+2190, U+2192, U+2713" }],
+});
+
 export const fontVariables = [
   spaceGrotesk.variable,
   plexSans.variable,
   plexMono.variable,
   notoDeva.variable,
+  plexSansArrows.variable,
+  plexMonoSymbols.variable,
 ].join(" ");
