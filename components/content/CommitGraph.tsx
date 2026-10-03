@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { graphProjects, projectHref } from "@/content/projects";
-import { activityGraph } from "@/content/site";
+import { a11y, activityGraph } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { CommitDot } from "./CommitDot";
 
@@ -117,7 +117,7 @@ function VerticalGraph({ className }: { className?: string }) {
           <li key={project.slug} style={{ height: V.row }}>
             <Link
               href={projectHref(project)}
-              aria-label={`Open ${project.title} project`}
+              aria-label={a11y.openProject(project.graphLabel ?? project.title)}
               className="flex h-full items-center gap-3 rounded-sm"
               style={{ paddingLeft: V.rail }}
             >

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpIcon } from "@/components/icons";
+import { a11y } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { useScroller } from "@/lib/scroll";
 
@@ -20,7 +21,7 @@ export function BackToTop() {
   return (
     <button
       type="button"
-      aria-label="Back to top"
+      aria-label={a11y.backToTop}
       onClick={() => scrollToTop()}
       tabIndex={visible ? 0 : -1}
       className={cn(

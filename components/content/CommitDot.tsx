@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { projectHref } from "@/content/projects";
-import { activityGraph } from "@/content/site";
+import { a11y, activityGraph } from "@/content/site";
 import type { Project } from "@/content/types";
 import { cn } from "@/lib/cn";
 
@@ -21,7 +21,7 @@ export function CommitDot({ project, labelPosition, className, style }: CommitDo
   return (
     <Link
       href={projectHref(project)}
-      aria-label={`Open ${project.title} project`}
+      aria-label={a11y.openProject(project.graphLabel ?? project.title)}
       data-cursor="link"
       style={{ "--project": project.color, ...style } as CSSProperties}
       className={cn("group/dot absolute -mt-15 -ml-20 block h-28 w-40 rounded-md", className)}

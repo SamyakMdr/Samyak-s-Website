@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAdjacentProjects, getProject, projects } from "@/content/projects";
+import { JsonLd } from "@/components/layout/JsonLd";
+import { getAdjacentProjects, getProject, projectHref, projects } from "@/content/projects";
 import { seo, site } from "@/content/site";
+import { breadcrumbJsonLd, creativeWorkJsonLd, pageMetadata } from "@/lib/seo";
 import { Cover } from "./_sections/Cover";
 import { Facts } from "./_sections/Facts";
 import { Gallery } from "./_sections/Gallery";
@@ -25,7 +27,13 @@ export async function generateMetadata({ params }: RoomPageProps): Promise<Metad
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  return seo.rooms[slug] ?? { title: `${project.title} | ${site.name}`, description: project.summary };
+  const copy = seo.rooms[slug] ?? { title: `${project.title} | ${site.name}`, description: project.summary };
+  return pageMetadata({
+    ...copy,
+    path: projectHref(project),
+    // Covers are 1200 × 675.
+    image: { url: project.cover, width: 1200, height: 675, alt: project.coverAlt },
+  });
 }
 
 // One template for every project. Only heli-booking has room content so far;
@@ -39,6 +47,14 @@ export default async function ProjectRoomPage({ params }: RoomPageProps) {
 
   return (
     <main id="main" className="pt-(--header-h)">
+      <JsonLd data={creativeWorkJsonLd(project)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: seo.breadcrumbs.home, path: "/" },
+          { name: seo.breadcrumbs.projects, path: "/projects" },
+          { name: project.title, path: projectHref(project) },
+        ])}
+      />
       <article className="page-x flex flex-col gap-9 pt-5 pb-24 tablet:gap-14 tablet:pt-10">
         <RoomBar project={project} previous={previous} next={next} />
 

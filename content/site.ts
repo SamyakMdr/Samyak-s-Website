@@ -42,6 +42,24 @@ export const header = {
   openTerminal: "Open the terminal",
 };
 
+/** Screen-reader labels (doc/seo-accessibility.md). */
+export const a11y = {
+  home: (brand: string) => `${brand}, home`,
+  sections: "Sections",
+  menu: "Menu",
+  breadcrumb: "Breadcrumb",
+  introduction: "Introduction",
+  backToTop: "Back to top",
+  terminalOutput: "Terminal output",
+  commands: "Commands",
+  runCommand: (command: string) => `Run ${command}`,
+  openProject: (title: string) => `Open ${title} project`,
+  carousel: "carousel",
+  slide: "slide",
+  slideOf: (index: number, total: number) => `${index} of ${total}`,
+  carouselDots: (index: number, total: number) => `Project ${index} of ${total}. Show the next one`,
+};
+
 /** Label on the custom cursor while it is over a project card. */
 export const cursor = { open: "Open" };
 
@@ -249,4 +267,7 @@ export const seo = {
     },
   } as Record<string, { title: string; description: string }>,
   ogImage: "/og/og-default.png",
+  ogImageAlt: "README.md card: Samyak builds fast web apps and dependable backends.",
+  /** Names used in breadcrumb structured data. */
+  breadcrumbs: { home: "Home", projects: "Projects" },
 };

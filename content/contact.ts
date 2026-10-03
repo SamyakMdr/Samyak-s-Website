@@ -38,13 +38,15 @@ export const contactCard = {
 export interface SocialLink {
   name: TechName;
   href: string;
+  /** A public profile, listed as `sameAs` in the Person structured data. */
+  profile?: boolean;
 }
 
 export const socials: SocialLink[] = [
-  { name: "GitHub", href: "#" }, // TODO: real data
-  { name: "LinkedIn", href: "#" }, // TODO: real data
-  { name: "X", href: "#" }, // TODO: real data
-  { name: "Instagram", href: "#" }, // TODO: real data
+  { name: "GitHub", href: "#", profile: true }, // TODO: real data
+  { name: "LinkedIn", href: "#", profile: true }, // TODO: real data
+  { name: "X", href: "#", profile: true }, // TODO: real data
+  { name: "Instagram", href: "#", profile: true }, // TODO: real data
   { name: "WhatsApp", href: "#" }, // TODO: real data
 ];
 
