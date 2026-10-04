@@ -2,8 +2,10 @@ export interface Activity {
   role: string;
   org: string;
   dates: string;
-  /** Monogram shown until the organisation's logo is added. */
+  /** Organisation logo, a file in public/. */
   logo: string;
+  /** The organisation's website. The name and logo link to it when set. */
+  href?: string;
 }
 
 export const activitiesBox = {
@@ -11,19 +13,27 @@ export const activitiesBox = {
   text: "What I do outside work and class.",
 };
 
-// Organisation names, roles, dates and logos are placeholders. TODO: real data
+// Organisation names, roles and dates are placeholders. TODO: real data
 export const activities: Activity[] = [
   {
-    role: "Creative Hub Director",
-    org: "Organisation or club name",
-    dates: "2024 – Present",
-    logo: "CH",
+    role: "Prime Creative Hub Director",
+    org: "Prime Creative Hub",
+    dates: "– Present",
+    logo: "/logos/Creatiive-hub.jpg",
+    href: "https://creativehub.primeitclub.com/",
   },
-  { role: "Hackathon team lead", org: "Event name", dates: "2024", logo: "HX" },
   {
-    role: "Volunteer web developer",
-    org: "Community or NGO name",
-    dates: "2023 – 2024",
-    logo: "VW",
+    role: "Prime IT Club",
+    org: "Prime IT Club",
+    dates: "2023 - Present",
+    logo: "/logos/prime-it-club-logo.png",
+    href: "https://primeitclub.com/",
+  },
+  {
+    role: "General Member of Simrik Club",
+    org: "Simrik Yuva Pariwar",
+    dates: "2023 – 2026",
+    logo: "/logos/simric-logo.jpg",
+    href: "https://www.facebook.com/simrik.club/",
   },
 ];

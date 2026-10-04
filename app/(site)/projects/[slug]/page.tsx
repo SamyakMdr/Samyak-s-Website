@@ -60,7 +60,7 @@ export default async function ProjectRoomPage({ params }: RoomPageProps) {
 
         {/* Desktop: intro and facts side by side, cover below. Mobile and tablet:
             intro, cover, then facts. */}
-        <div className="grid gap-9 tablet:gap-14 desktop:grid-cols-[minmax(0,1fr)_380px] desktop:items-start">
+        <div className="grid grid-cols-1 gap-9 tablet:gap-14 desktop:grid-cols-[minmax(0,1fr)_380px] desktop:items-start">
           <Intro project={project} />
           <Facts project={project} className="max-desktop:order-3" />
           <Cover project={project} className="max-desktop:order-2 desktop:col-span-2" />

@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { contactForm } from "@/content/contact";
 import { cn } from "@/lib/cn";
-import { contactSchema, type ContactValues } from "@/lib/contact";
+import { contactSchema, type ContactFailure, type ContactValues } from "@/lib/contact";
 import { prefersReducedMotion } from "@/lib/scroll";
+import { useTurnstile } from "@/lib/useTurnstile";
 
 type CheckKey = keyof typeof contactForm.checks;
 type CheckState = "running" | "passed" | "failed";
@@ -37,11 +38,20 @@ function growToContent(event: FormEvent<HTMLTextAreaElement>) {
 }
 
 // The contact form, written as a pull request: Submit PR runs a short list of
-// checks (validate, spam, send) and then reports the result.
+// checks (validate, spam, send) and then reports the result. The spam check is
+// a Cloudflare Turnstile challenge, verified again by the Server Action.
 export function ContactForm({ className }: { className?: string }) {
   const { fields } = contactForm;
   const [status, setStatus] = useState<Status>("idle");
   const [checks, setChecks] = useState<Partial<Record<CheckKey, CheckState>>>({});
+  const [failure, setFailure] = useState<ContactFailure>("failed");
+  const {
+    enabled: turnstileEnabled,
+    container: turnstileContainer,
+    interactive: turnstileInteractive,
+    prepare: prepareTurnstile,
+    getToken: getTurnstileToken,
+  } = useTurnstile("contact");
   const {
     register,
     handleSubmit,
@@ -59,27 +69,48 @@ export function ContactForm({ className }: { className?: string }) {
     setChecks({ validate: "running" });
     await pause(step);
     setChecks({ validate: "passed", spam: "running" });
-    await pause(step);
+
+    let turnstileToken: string | undefined;
+    try {
+      [turnstileToken] = await Promise.all([getTurnstileToken(), pause(step)]);
+    } catch {
+      setChecks({ validate: "passed", spam: "failed" });
+      setFailure("bot");
+      setStatus("error");
+      return;
+    }
     setChecks({ validate: "passed", spam: "passed", send: "running" });
 
-    const result = await sendContactMessage(values).catch(() => ({ ok: false as const }));
+    const result = await sendContactMessage({ ...values, turnstileToken }).catch(() => ({
+      ok: false as const,
+      reason: "failed" as const,
+    }));
     if (result.ok) {
       setChecks({ validate: "passed", spam: "passed", send: "passed" });
       setStatus("sent");
       reset();
       // Back to the single-line box.
       form?.querySelector("textarea")?.style.removeProperty("height");
+    } else if (result.reason === "bot") {
+      setChecks({ validate: "passed", spam: "failed" });
+      setFailure("bot");
+      setStatus("error");
     } else {
       setChecks({ validate: "passed", spam: "passed", send: "failed" });
+      setFailure(result.reason);
       setStatus("error");
     }
   };
 
   const busy = status === "checking";
+  const failureText =
+    failure === "bot" || failure === "rate-limited" ? contactForm.failures[failure] : contactForm.failure;
 
   return (
     <form
       onSubmit={handleSubmit(onValid)}
+      // Fetch Turnstile once someone starts writing, not on page load.
+      onFocusCapture={() => void prepareTurnstile().catch(() => {})}
       noValidate
       aria-label={contactForm.label}
       className={cn("overflow-hidden rounded-lg border border-line bg-panel", className)}
@@ -136,6 +167,11 @@ export function ContactForm({ className }: { className?: string }) {
           {...register("company")}
         />
 
+        {/* Out of the layout until Cloudflare asks the visitor to click. */}
+        {turnstileEnabled && (
+          <div ref={turnstileContainer} className={cn(!turnstileInteractive && "absolute size-0 overflow-hidden")} />
+        )}
+
         <div className="flex items-center gap-3.5">
           <Button type="submit" variant="primary" fullWidth="mobile" disabled={busy}>
             {contactForm.submit}
@@ -156,7 +192,7 @@ export function ContactForm({ className }: { className?: string }) {
               );
             })}
           {status === "sent" && <p className="t-body-sm pt-1 text-fg">{contactForm.success}</p>}
-          {status === "error" && <p className="t-body-sm pt-1 text-bad">{contactForm.failure}</p>}
+          {status === "error" && <p className="t-body-sm pt-1 text-bad">{failureText}</p>}
         </div>
       </div>
     </form>

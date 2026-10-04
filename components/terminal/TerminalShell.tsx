@@ -5,7 +5,7 @@ import { terminalCopy } from "@/content/commands";
 import { a11y } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { loadOutput, TerminalOutput } from "./TerminalOutputLazy";
-import { Caret } from "./TerminalWindow";
+import { TypedText } from "./TerminalWindow";
 import { useTerminal } from "./useTerminal";
 
 type TerminalShellProps = {
@@ -24,7 +24,7 @@ type TerminalShellProps = {
 // printed above the prompt and older lines scroll away, as in a real shell.
 export function TerminalShell({ children, className, entryClassName, caretClassName }: TerminalShellProps) {
   const terminal = useTerminal();
-  const { input, entries, suggestion, inputRef } = terminal;
+  const { input, caret, entries, suggestion, inputRef } = terminal;
   const screen = useRef<HTMLDivElement>(null);
   const log = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
@@ -103,16 +103,15 @@ export function TerminalShell({ children, className, entryClassName, caretClassN
               longer than the frame: the start of the line is what gets cut off. */}
           <div className={cn("relative flex min-w-0 flex-1 overflow-hidden", input && "flex-row-reverse")}>
             <div aria-hidden="true" className={cn("flex min-w-0 items-center whitespace-pre", input && "mr-auto shrink-0")}>
-              <span>{input}</span>
-              {suggestion && <span className="text-dim">{suggestion}</span>}
-              <Caret className={cn(caretClassName, input && "ml-2 tablet:ml-2.5")} />
+              <TypedText input={input} caret={caret} suggestion={suggestion} caretClassName={caretClassName} />
               {focused && !input && <span className="ml-2 min-w-0 truncate text-dim tablet:ml-2.5">{terminalCopy.idleHint}</span>}
             </div>
             <input
               ref={inputRef}
               id={inputId}
               value={input}
-              onChange={(event) => terminal.change(event.target.value)}
+              onChange={(event) => terminal.change(event.target.value, event.target.selectionEnd ?? undefined)}
+              onSelect={(event) => terminal.syncCaret(event.currentTarget)}
               onKeyDown={terminal.onKeyDown}
               onFocus={() => {
                 setFocused(true);

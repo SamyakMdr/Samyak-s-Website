@@ -18,6 +18,7 @@ function ContactCard() {
           width={56}
           height={56}
           sizes="56px"
+          loading="lazy"
           className="size-12 shrink-0 rounded-full object-cover tablet:size-14"
         />
         <div className="flex min-w-0 flex-col gap-0.5">
@@ -49,7 +50,9 @@ function ContactCard() {
             <a
               href={social.href}
               aria-label={social.name}
-              className="flex size-10 items-center justify-center rounded-btn text-fg transition-colors duration-(--dur-ui) ease-ui hover:text-dim"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex size-10 items-center justify-center rounded-btn text-fg transition-colors duration-(--dur-ui) ease-ui hover:text-blue-t active:text-blue-t"
             >
               <TechLogo name={social.name} size={24} mono />
             </a>

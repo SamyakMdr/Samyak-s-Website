@@ -166,6 +166,7 @@ function Line({ line, onRun, rows }: LineProps) {
                     width={72}
                     height={42}
                     sizes="72px"
+                    loading="lazy"
                     className="h-10.5 w-18 shrink-0 rounded-xs border border-line object-cover"
                   />
                   <span className="flex min-w-0 flex-col">

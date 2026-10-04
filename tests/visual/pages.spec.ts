@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 const ROUTES = [
   { name: "home", path: "/" },
   { name: "projects", path: "/projects" },
-  { name: "room-heli-booking", path: "/projects/heli-booking" },
+  { name: "room-mountain-helicopter-system", path: "/projects/mountain-helicopter-system" },
 ] as const;
 
 const THEMES = ["dark", "light"] as const;

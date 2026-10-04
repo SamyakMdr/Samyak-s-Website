@@ -9,7 +9,7 @@ export const site = {
   location: "Kathmandu, Nepal",
   city: "Kathmandu",
   country: "Nepal",
-  url: "https://yourdomain.com",
+  url: "https://samyakmanandhar.com.np",
   cv: {
     href: "/cv/samyak-cv.pdf",
     file: "samyak-cv.pdf",
@@ -74,6 +74,9 @@ export const a11y = {
   slideOf: (index: number, total: number) => `${index} of ${total}`,
   carouselDots: (index: number, total: number) =>
     `Project ${index} of ${total}. Show the next one`,
+  loadingPage: "Loading page",
+  loadingContactForm: "Loading contact form",
+  loadingTerminalOutput: "Loading terminal output",
 };
 
 /** Label on the custom cursor while it is over a project card. */
@@ -166,7 +169,7 @@ export const projectsSection = {
   intro:
     "Six recent builds. Open one to see screenshots, the architecture and what I learned.",
   introMobile: "Six recent builds. Tap one to open it.",
-  viewAll: "View all 12 projects",
+  viewAll: "View all projects",
   openRoom: "Open room",
 };
 
@@ -174,9 +177,9 @@ export const projectsPage = {
   breadcrumb: ["home", "projects"],
   title: "All projects",
   intro:
-    "Twelve builds across web apps, APIs, DevOps and interface design. Filter by type or search by tool.",
+    "Builds across web apps, mobile, AI and DevOps. Filter by type or search by tool.",
   introMobile:
-    "Twelve builds across web apps, APIs, DevOps and interface design.",
+    "Builds across web apps, mobile, AI and DevOps.",
   searchPlaceholder: "filter by name or tool, e.g. nestjs",
   searchPlaceholderMobile: "filter, e.g. nestjs",
   searchLabel: "Filter projects",
@@ -248,8 +251,8 @@ export const footer = {
       /** Hidden on mobile, which shows two columns. */
       desktopOnly: true,
       links: [
-        { label: "Helicopter booking", href: "/projects/heli-booking" },
-        { label: "Mountain Helicopters Nepal", href: "/projects/mhn-platform" },
+        { label: "Helicopter operations system", href: "/projects/mountain-helicopter-system" },
+        { label: "Mountain Helicopter Nepal website", href: "/projects/mountain-helicopter-website" },
         { label: "Nepali voice inventory", href: "/projects/nepali-voice" },
         { label: "All projects", href: "/projects" },
       ],
@@ -277,10 +280,10 @@ export const seo = {
   projects: {
     title: "Projects by Samyak | Web Apps, APIs and DevOps",
     description:
-      "Twelve builds across web apps, APIs, DevOps and interface design, with screenshots and the stack behind each one.",
+      "Builds across web apps, mobile, AI and DevOps, with screenshots and the stack behind each one.",
   },
   rooms: {
-    "heli-booking": {
+    "mountain-helicopter-system": {
       title: "Helicopter Booking System | Samyak",
       description:
         "A private booking and dispatch system for a helicopter operator, built with React, NestJS and PostgreSQL.",

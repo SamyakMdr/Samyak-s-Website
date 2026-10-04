@@ -1,8 +1,8 @@
 // Scroll helpers shared by anchors, nav tabs, Back to Top and terminal commands.
 // Lenis drives the scroll on desktop pointers; everything else falls back to
-// the native scroller. Targets land 56px below the top (the fixed header).
+// the native scroller. Targets land 68px below the top (the fixed header).
 
-export const HEADER_HEIGHT = 56;
+export const HEADER_HEIGHT = 68;
 
 interface LenisLike {
   /** Where a smooth scroll in flight is heading. */

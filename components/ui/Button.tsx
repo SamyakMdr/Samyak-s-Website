@@ -1,6 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ReactNode,
+} from "react";
 import { DownloadIcon } from "@/components/icons";
 import { cn } from "@/lib/cn";
 
@@ -50,15 +54,20 @@ type ButtonOwnProps = VariantProps<typeof button> & {
 };
 
 type ButtonAsButton = ButtonOwnProps &
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonOwnProps> & { href?: undefined };
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonOwnProps> & {
+    href?: undefined;
+  };
 
 type ButtonAsLink = ButtonOwnProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof ButtonOwnProps> & { href: string };
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof ButtonOwnProps> & {
+    href: string;
+  };
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 export function Button(props: ButtonProps) {
-  const { variant, size, fullWidth, icon, children, className, ...rest } = props;
+  const { variant, size, fullWidth, icon, children, className, ...rest } =
+    props;
   const classes = cn(button({ variant, size, fullWidth }), className);
   const content = (
     <>
@@ -90,7 +99,8 @@ export function Button(props: ButtonProps) {
     );
   }
 
-  const { type = "button", ...buttonProps } = rest as ButtonHTMLAttributes<HTMLButtonElement>;
+  const { type = "button", ...buttonProps } =
+    rest as ButtonHTMLAttributes<HTMLButtonElement>;
   return (
     <button type={type} className={classes} {...buttonProps}>
       {content}

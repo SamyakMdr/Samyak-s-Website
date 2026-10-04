@@ -26,36 +26,27 @@ export const experienceSection = {
 export const experience: TimelineEntry[] = [
   {
     title: "Junior Full-Stack Developer",
-    dates: "Jan 2025 – Present",
-    place: "Company name · City, Country · Full-time",
-    placeMobile: "Company name · City, Country",
+    dates: "July 2026 – Present",
+    place:
+      "Mountain Helicopters Nepal Pvt. Ltd. · Pepsicola, Kathmandu, Nepal · Full-time",
+    placeMobile:
+      "Mountain Helicopters Nepal Pvt. Ltd. · Pepsicola, Kathmandu, Nepal",
     summaryMobile:
-      "Internal tools and client web apps with Next.js, NestJS and PostgreSQL. Leading the role-based booking system.",
+      "Internal tools and client web apps with Next.js, NestJS and PostgreSQL. Leading the role-based booking system and CMS Website.",
     summary:
       "Building internal tools and client web apps with Next.js, NestJS and PostgreSQL. Leading the role-based booking system from database design to deployment.",
     hash: "a3f9c21",
-    commit: "feat: role-based dispatch board",
+    commit: "feat: Role-based dispatch System and CMS Website",
   },
   {
-    title: "Full-Stack Developer Intern",
-    dates: "Jun 2024 – Dec 2024",
-    place: "Company name · City, Country · Internship",
-    placeMobile: "Company name · City, Country",
-    summaryMobile: "REST APIs and admin dashboards. Set up nightly database backups to Cloudflare R2.",
-    summary:
-      "Worked on REST APIs and admin dashboards. Set up nightly database backups to Cloudflare R2 for the team's servers.",
+    title: "Front End Developer Trainee",
+    dates: "Feb 2026 – August 2026",
+    place: "Rewa Soft Pvt. Ltd. · Lumbini Marg, Kathmandu, Nepal · Internship",
+    placeMobile: "Rewa Soft Pvt. Ltd. · Lumbini Marg, Kathmandu, Nepal",
+    summaryMobile: "Frontend development, REST APIs and CMS Dashboards.",
+    summary: "Frontend development, REST APIs and CMS Dashboards.",
     hash: "7be04d2",
-    commit: "chore: nightly backups to R2",
-  },
-  {
-    title: "Freelance Web Developer",
-    dates: "2023 – 2024",
-    place: "Self-employed · Remote",
-    summaryMobile: "Small business websites, with hosting, DNS and basic SEO for each client.",
-    summary:
-      "Built and launched small business websites. Handled hosting, DNS and basic SEO for each client.",
-    hash: "19c5e80",
-    commit: "release: first client site live",
+    commit: "chore: Frontend Development, REST APIs, CMS Dashboards and CRM.",
   },
 ];
 

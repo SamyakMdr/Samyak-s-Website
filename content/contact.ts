@@ -16,16 +16,17 @@ export interface ContactDetail {
   label: string;
   value: string;
   href?: string;
+  /** Open browser destinations separately; native email and phone actions stay in place. */
+  external?: boolean;
   /** The mobile card shows three rows (no website). */
   desktopOnly?: boolean;
 }
 
-// Email, phone, location, website and social URLs are placeholders. TODO: real data
 export const contactCard = {
   name: "Samyak Manandhar",
   title: "Junior Full-Stack Developer",
   avatar: {
-    src: "/images/people/portrait.jpg",
+    src: "/images/people/samyak-portrait.jpg",
     alt: "Portrait of Samyak",
   },
   details: [
@@ -35,13 +36,25 @@ export const contactCard = {
       value: "samyak11manandhar@gmail.com",
       href: "mailto:samyak11manandhar@gmail.com",
     },
-    { icon: "phone", label: "Phone", value: "+977 9843922441" },
-    { icon: "location", label: "Based in", value: "Kathmandu, Nepal" },
+    {
+      icon: "phone",
+      label: "Phone",
+      value: "+977 9843922441",
+      href: "tel:+9779843922441",
+    },
+    {
+      icon: "location",
+      label: "Based in",
+      value: "Kathmandu, Nepal",
+      href: "https://www.google.com/maps/search/?api=1&query=Kathmandu%2C%20Nepal",
+      external: true,
+    },
     {
       icon: "website",
       label: "Website",
       value: "samyakmanandhar.com.np",
       href: "https://samyakmanandhar.com.np",
+      external: true,
       desktopOnly: true,
     },
   ] satisfies ContactDetail[] as ContactDetail[],
@@ -58,6 +71,11 @@ export interface SocialLink {
 
 export const socials: SocialLink[] = [
   { name: "GitHub", href: "https://github.com/SamyakMdr", profile: true }, // TODO: real data
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/samyak.manandhar.10",
+    profile: true,
+  },
   {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/samyak-manandhar/",
@@ -115,6 +133,32 @@ export const contactForm = {
     send: "sending",
   },
   // Result lines are not drawn in Figma. TODO: confirm copy
-  success: "Message sent. I usually reply within a day.",
+  success:
+    "Message sent. Check your inbox for a confirmation. I usually reply within a day.",
   failure: "Could not send the message. Try again, or email me directly.",
+  // Shown instead of `failure` when the server gives a more specific reason.
+  failures: {
+    bot: "Could not confirm you are human. Reload the page and try again, or email me directly.",
+    "rate-limited":
+      "Too many messages in a short time. Try again later, or email me directly.",
+  },
+};
+
+// The two emails a submitted form produces (lib/server/mail.ts).
+export const contactEmails = {
+  // Delivered to me.
+  notification: {
+    sender: "Portfolio contact form",
+    subjectPrefix: "[Portfolio]",
+  },
+  // Sent back to the person who wrote. TODO: confirm copy (draft)
+  autoReply: {
+    subject: "Thanks for your message",
+    greeting: (name: string) => (name ? `Hi ${name},` : "Hi,"),
+    body: [
+      "Thanks for getting in touch. This is an automatic reply to let you know your message reached me.",
+      "I read everything myself and usually reply within a day.",
+    ],
+    signOff: "Samyak Manandhar\nhttps://samyakmanandhar.com.np",
+  },
 };

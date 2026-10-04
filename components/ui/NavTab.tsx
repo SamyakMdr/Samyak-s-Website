@@ -9,7 +9,12 @@ type NavTabProps = {
   className?: string;
 };
 
-export function NavTab({ label, href, active = false, className }: NavTabProps) {
+export function NavTab({
+  label,
+  href,
+  active = false,
+  className,
+}: NavTabProps) {
   return (
     <Link
       href={href}

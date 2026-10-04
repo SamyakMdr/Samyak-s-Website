@@ -153,7 +153,10 @@ motion). On Home desktop it also returns the intro to the hero panel.
 Fields: Your name, Assignee (your email), Title, Description. Validation: required name,
 valid email, title, description; error style = Input Field Error. Submit PR → short
 "checks" sequence (validating fields, scanning for spam, sending) then success message.
-Send via a Next.js Route Handler or Server Action (email service of your choice).
+Sent by the Server Action in `app/actions/contact.ts`: Gmail SMTP delivers the message to
+me and an automatic reply to the sender. "Scanning for spam" is a Cloudflare Turnstile
+challenge (verified on the server), backed by a honeypot field and rate limits (3 per
+10 minutes per visitor, 2 per hour per address, 100 per day in total).
 
 ## 13. Prototype link map (source of truth for navigation)
 

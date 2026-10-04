@@ -21,9 +21,9 @@ export const skillGroups: SkillGroup[] = [
     title: "Frontend and mobile",
     description: "Interfaces that load fast and work on any screen size.",
     tools: [
-      "React", "Next.js", "React Native", "TypeScript", "JavaScript",
+      "React", "Next.js", "React Native", "Redux Toolkit", "TypeScript", "JavaScript",
       "Tailwind CSS", "NativeWind", "Material UI", "Bootstrap", "TanStack",
-      "jQuery", "Figma",
+      "jQuery", "Vite", "Figma",
     ],
   },
   {

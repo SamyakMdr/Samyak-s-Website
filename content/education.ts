@@ -13,26 +13,38 @@ export const educationSection = {
 // School names, cities, years and summaries are placeholders. TODO: real data
 export const education: TimelineEntry[] = [
   {
-    title: "Bachelor's degree in Computer Science",
-    dates: "2021 – 2025",
-    place: "University or college name · City, Country",
-    placeMobile: "University or college name",
+    title:
+      "Bachelor's of Science in Computer Science and Information Technology (BSc.CSIT)",
+    dates: "2023 – Present",
+    place: "Tribhuvan University | Prime College · Kathmandu, Nepal",
+    placeMobile: "Tribhuvan University | Prime College",
     summaryMobile:
       "Data structures, databases, networks and software engineering. Final-year project on a web booking system.",
     summary:
-      "Core subjects in data structures, databases, networks and software engineering. Final-year project on a web-based booking system.",
+      "Core subjects in data structures, databases, networks and software engineering. Final-year project on Mobile App 'Bikri' a Nepali Voice Enabled Web Inventory Management System.",
     hash: "e41b7a0",
     commit: "learn: final-year project shipped",
   },
   {
-    title: "Higher secondary education (+2), Science",
-    dates: "2019 – 2021",
-    place: "School or college name · City, Country",
-    placeMobile: "School or college name",
+    title: "NATIONAL EXAMINATIONS BOARD, (+2 Science)",
+    dates: "October 2022",
+    place: "Trinity International College · Dillibazaar, Kathmandu",
+    placeMobile: "Trinity International College",
     summaryMobile: "Science stream with mathematics and computer science.",
     summary:
       "Science stream with mathematics and computer science, where I wrote my first programs.",
     hash: "0c93f2d",
     commit: "learn: hello world in C",
+  },
+  {
+    title: "Secondary Education Examination (SEE), GRADE-10",
+    dates: "August 2020",
+    place: "Shankari School · Chhauni, Kathmandu",
+    placeMobile: "Shankari School",
+    summaryMobile: "Science stream with mathematics and computer science.",
+    summary:
+      "I wrote my first HTML and CSS code in this period, and learned the basics of programming.",
+    hash: "0c93f2d",
+    commit: "learn: hello world in HTML, CSS and JS",
   },
 ];

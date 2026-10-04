@@ -25,7 +25,14 @@ export function GallerySwipe({ screens, label, className }: { screens: RoomScree
             >
               <figure className="flex flex-col gap-2">
                 <div className="relative h-43.75 overflow-hidden rounded-md border border-line">
-                  <Image src={screen.src} alt={screen.alt} fill sizes="310px" className="object-cover" />
+                  <Image
+                    src={screen.src}
+                    alt={screen.alt}
+                    fill
+                    sizes="310px"
+                    loading="lazy"
+                    className="object-cover"
+                  />
                 </div>
                 <figcaption className="t-body-sm text-dim">{screen.captionMobile ?? screen.caption}</figcaption>
               </figure>

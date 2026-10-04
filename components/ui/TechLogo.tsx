@@ -16,7 +16,14 @@ type TechLogoProps = {
 };
 
 export function TechLogo({ name, size = 40, ring = false, labelled = false, mono = false, className }: TechLogoProps) {
-  const entry: Tech = tech[name];
+  // A name missing from the tech list shows a neutral tile instead of taking the page down.
+  // `npm run typecheck` reports the missing name.
+  const entry: Tech = (tech as Record<string, Tech>)[name] ?? {
+    slug: "",
+    monogram: String(name).slice(0, 2),
+    tile: "#475569",
+    ink: "#FFFFFF",
+  };
   const { slug, monogram, tile, ink } = entry;
   const a11y = labelled ? { role: "img", "aria-label": name } : { "aria-hidden": true };
 
@@ -47,9 +54,25 @@ export function TechLogo({ name, size = 40, ring = false, labelled = false, mono
         )}
         style={{ width: size, height: size }}
       >
-        <Image src={src} alt="" width={size} height={size} unoptimized className={cn("size-full object-contain", dark && "logo-light")} />
+        <Image
+          src={src}
+          alt=""
+          width={size}
+          height={size}
+          loading="lazy"
+          unoptimized
+          className={cn("size-full object-contain", dark && "logo-light")}
+        />
         {dark && (
-          <Image src={dark} alt="" width={size} height={size} unoptimized className="logo-dark size-full object-contain" />
+          <Image
+            src={dark}
+            alt=""
+            width={size}
+            height={size}
+            loading="lazy"
+            unoptimized
+            className="logo-dark size-full object-contain"
+          />
         )}
       </span>
     );

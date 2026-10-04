@@ -108,17 +108,17 @@ export const slashMenu: SlashItem[] = [
   {
     command: "/projects",
     run: "/projects",
-    description: "Browse all 12 projects, filter with --type",
-    descriptionMobile: "All 12 projects",
+    description: "Browse all projects, filter with --type",
+    descriptionMobile: "All projects",
     href: "/projects",
   },
   {
     command: "/open <name>",
-    commandMobile: "/open heli",
-    run: "/open heli",
-    description: "Open a project room, e.g. /open heli",
-    descriptionMobile: "Helicopter booking",
-    href: "/projects/heli-booking",
+    commandMobile: "/open crm",
+    run: "/open crm",
+    description: "Open a project room, e.g. /open crm",
+    descriptionMobile: "CRM system",
+    href: "/projects/crm-software",
   },
   { command: "/cv", run: "/cv", description: "Download my CV as a PDF", descriptionMobile: "Download my CV", href: "/#cv" },
   {
@@ -136,7 +136,7 @@ export const slashMenu: SlashItem[] = [
 export const hints: string[] = [
   "goto projects",
   "download cv",
-  "open heli",
+  "open crm",
   "goto contact",
   "switch-theme",
   "help",
@@ -147,6 +147,7 @@ export const projectTypeFlags: Record<ProjectType, string> = {
   backend: "backend",
   devops: "devops",
   ai: "ai",
+  mobile: "mobile",
   ui: "ui",
 };
 
@@ -215,12 +216,12 @@ export const terminalCopy = {
   cvSaved: "samyak-cv.pdf · 180 KB",
   themeSwitched: (theme: string) => `theme set to ${theme}`,
   noProjects: (type: string) => `no projects of type ${type}`,
-  unknownType: (type: string) => `unknown type ${type}, try web, backend, devops, ai or ui`,
-  missingProject: "which project? try open heli",
+  unknownType: (type: string) => `unknown type ${type}, try web, backend, devops, ai, mobile or ui`,
+  missingProject: "which project? try open crm",
   // Help output, as drawn on the "Terminal and hint states" board.
   help: [
     { command: "goto <page>", description: "home, projects, contact" },
-    { command: "open <project>", description: "heli, mhn, voice" },
+    { command: "open <project>", description: "crm, bikri, legend" },
     { command: "download cv" },
     { command: "switch-theme" },
   ] as { command: string; description?: string }[],

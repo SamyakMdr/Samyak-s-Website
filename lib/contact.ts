@@ -10,7 +10,8 @@ const text = (message: string, max: number) =>
 // rules. zod/mini keeps the validation code in the browser small.
 export const contactSchema = z.object({
   name: text(errors.name, 120),
-  email: z.pipe(z.string().check(z.trim()), z.email(errors.email)),
+  // 254 is the longest address a mail server accepts.
+  email: z.pipe(z.string().check(z.trim(), z.maxLength(254, errors.email)), z.email(errors.email)),
   title: text(errors.title, 160),
   description: text(errors.description, 5000),
   // Honeypot: hidden from people, so anything in it comes from a bot.
@@ -19,4 +20,14 @@ export const contactSchema = z.object({
 
 export type ContactValues = z.infer<typeof contactSchema>;
 
-export type ContactResult = { ok: true } | { ok: false; reason: "invalid" | "failed" };
+// What the Server Action receives: the fields plus the Turnstile token the
+// browser earned for this submission.
+export const contactRequestSchema = z.extend(contactSchema, {
+  turnstileToken: z.optional(z.string().check(z.maxLength(2048))),
+});
+
+export type ContactRequest = z.infer<typeof contactRequestSchema>;
+
+export type ContactFailure = "invalid" | "bot" | "rate-limited" | "failed";
+
+export type ContactResult = { ok: true } | { ok: false; reason: ContactFailure };

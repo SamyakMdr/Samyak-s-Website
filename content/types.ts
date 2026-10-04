@@ -1,7 +1,7 @@
 import type { TechName } from "./tech";
 
 export type Tone = "blue" | "green" | "violet" | "cyan" | "pink";
-export type ProjectType = "web" | "backend" | "devops" | "ai" | "ui";
+export type ProjectType = "web" | "backend" | "devops" | "ai" | "mobile" | "ui";
 
 export interface RoomFact {
   label: string;
@@ -59,9 +59,10 @@ export interface Project {
   /** Used by filters and `/projects --type`. */
   type: ProjectType;
   year: number;
-  tone: Tone;
+  /** No longer read: the branch tag takes `color`. Accepted so older entries still type-check. */
+  tone?: string;
   branch: string;
-  /** CSS colour for the graph, hover border and glow. */
+  /** CSS colour for the graph, branch tag, hover border and glow: a --p-* token from globals.css. */
   color: string;
   /** The first three are shown as logos on cards. */
   stack: TechName[];
@@ -72,6 +73,7 @@ export interface Project {
   featured?: boolean;
   /** Short label on the commit graph. */
   graphLabel?: string;
-  links: { demo: string; github: string };
+  /** `github` is left out when the repository is private. */
+  links: { demo: string; github?: string };
   room?: ProjectRoom;
 }

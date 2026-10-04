@@ -6,14 +6,29 @@ import { a11y, hero, terminalSection } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { INTRO_QUERY, loadMotion } from "@/lib/gsap";
 import { stepBetween, type Steps } from "@/lib/introSteps";
-import { registerAnchor, replayAnchor, scrollToY } from "@/lib/scroll";
+import {
+  HEADER_HEIGHT,
+  registerAnchor,
+  replayAnchor,
+  scrollToY,
+} from "@/lib/scroll";
 
 type HorizontalIntroProps = {
   hero: ReactNode;
   terminal: ReactNode;
 };
 
-function ScrollCue({ label, arrow, step, onClick }: { label: string; arrow: string; step: 0 | 1; onClick: () => void }) {
+function ScrollCue({
+  label,
+  arrow,
+  step,
+  onClick,
+}: {
+  label: string;
+  arrow: string;
+  step: 0 | 1;
+  onClick: () => void;
+}) {
   return (
     <button
       type="button"
@@ -26,7 +41,13 @@ function ScrollCue({ label, arrow, step, onClick }: { label: string; arrow: stri
       </span>
       <span aria-hidden="true" className="flex gap-1.5">
         {[0, 1].map((dot) => (
-          <span key={dot} className={cn("h-1.5 rounded-[3px]", dot === step ? "w-5.5 bg-blue" : "w-2 bg-line")} />
+          <span
+            key={dot}
+            className={cn(
+              "h-1.5 rounded-[3px]",
+              dot === step ? "w-5.5 bg-blue" : "w-2 bg-line",
+            )}
+          />
         ))}
       </span>
     </button>
@@ -37,7 +58,10 @@ function ScrollCue({ label, arrow, step, onClick }: { label: string; arrow: stri
 // scrolling slides the track 100vw to the left, bringing the terminal in from
 // the right. It moves in whole steps: any scroll goes all the way to the other
 // panel. Everywhere else the two panels simply stack.
-export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: HorizontalIntroProps) {
+export function HorizontalIntro({
+  hero: heroPanel,
+  terminal: terminalPanel,
+}: HorizontalIntroProps) {
   const section = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   // Scroll positions of the two panels while pinned; null when stacked.
@@ -72,10 +96,14 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
         let focused: HTMLElement | null = null;
         const beforeRefresh = () => {
           const active = document.activeElement;
-          focused = active instanceof HTMLElement && root.contains(active) ? active : null;
+          focused =
+            active instanceof HTMLElement && root.contains(active)
+              ? active
+              : null;
         };
         const afterRefresh = () => {
-          if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+          if (focused?.isConnected && document.activeElement !== focused)
+            focused.focus({ preventScroll: true });
           focused = null;
           replayAnchor();
         };
@@ -90,7 +118,7 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
             pin: true,
             // Tied straight to the scroll position: the step's own easing is the motion.
             scrub: true,
-            start: "top top+=56",
+            start: `top top+=${HEADER_HEIGHT}`,
             end: () => `+=${window.innerWidth}`,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -113,13 +141,17 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
         ScrollTrigger.addEventListener("refresh", afterRefresh);
 
         // Wheel, keys (↓ → Space PageDown, ↑ ← PageUp) and touch all move one whole panel.
-        const stepper = stepBetween({ start: () => trigger.start, end: () => trigger.end });
+        const stepper = stepBetween({
+          start: () => trigger.start,
+          end: () => trigger.end,
+        });
         steps.current = stepper;
 
         // Tabbing can put focus in the panel that is off to the side; slide it in.
         const onFocusIn = (event: FocusEvent) => {
           const { target } = event;
-          if (!(target instanceof Element) || !target.matches(":focus-visible")) return;
+          if (!(target instanceof Element) || !target.matches(":focus-visible"))
+            return;
           const y = window.scrollY;
           if (target.closest("#terminal")) {
             if (y < trigger.end - 1) stepper.forward();
@@ -159,15 +191,25 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
 
   const goToTerminal = () => steps.current?.forward();
   const goPast = () => {
-    if (bounds.current) scrollToY(bounds.current.end + window.innerHeight * 0.6);
+    if (bounds.current)
+      scrollToY(bounds.current.end + window.innerHeight * 0.6);
   };
 
   return (
     <div ref={section} className="intro overflow-x-clip">
       <div ref={track} className="intro-track flex flex-col">
-        <section id="main" aria-label={a11y.introduction} className="intro-panel page-x relative pt-5 pb-3 tablet:pt-6 tablet:pb-12">
+        <section
+          id="main"
+          aria-label={a11y.introduction}
+          className="intro-panel page-x relative pt-5 pb-3 tablet:pt-6 tablet:pb-12"
+        >
           {heroPanel}
-          <ScrollCue label={hero.cue} arrow="→" step={0} onClick={goToTerminal} />
+          <ScrollCue
+            label={hero.cue}
+            arrow="→"
+            step={0}
+            onClick={goToTerminal}
+          />
         </section>
         <section
           id="terminal"
@@ -175,7 +217,12 @@ export function HorizontalIntro({ hero: heroPanel, terminal: terminalPanel }: Ho
           className="intro-panel page-x relative pt-12 tablet:pt-6 tablet:pb-12"
         >
           {terminalPanel}
-          <ScrollCue label={terminalSection.cue} arrow="↓" step={1} onClick={goPast} />
+          <ScrollCue
+            label={terminalSection.cue}
+            arrow="↓"
+            step={1}
+            onClick={goPast}
+          />
         </section>
       </div>
     </div>

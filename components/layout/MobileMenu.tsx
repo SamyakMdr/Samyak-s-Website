@@ -153,7 +153,9 @@ export default function MobileMenu({ open, onClose, activeBranch }: MobileMenuPr
                     <a
                       href={social.href}
                       aria-label={social.name}
-                      className="flex size-10 items-center justify-center rounded-btn text-fg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex size-10 items-center justify-center rounded-btn text-fg transition-colors duration-(--dur-ui) ease-ui hover:text-blue-t active:text-blue-t"
                     >
                       <TechLogo name={social.name} size={24} mono />
                     </a>

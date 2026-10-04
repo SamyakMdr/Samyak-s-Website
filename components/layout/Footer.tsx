@@ -23,7 +23,7 @@ export function Footer() {
     <footer className="page-x flex flex-col gap-6 border-t border-line pt-10 pb-24 tablet:gap-10 tablet:pt-16 tablet:pb-10">
       <div className="flex flex-col gap-6 tablet:flex-row tablet:gap-16">
         <div className="flex flex-col gap-6 tablet:flex-1 tablet:gap-2.5">
-          <p className="t-h3 text-fg max-tablet:t-m-display">
+          <p className="t-h2 text-fg max-tablet:t-m-display">
             {site.brand.user}
             <span className="text-green-t">@</span>
             {site.brand.host}

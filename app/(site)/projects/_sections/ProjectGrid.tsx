@@ -56,17 +56,21 @@ export function ProjectGrid() {
             aria-label={projectsPage.filtersLabel}
             className="no-scrollbar flex min-w-0 gap-2 tablet:flex-wrap max-tablet:-my-1.5 max-tablet:-ml-1 max-tablet:overflow-x-auto max-tablet:py-1.5 max-tablet:pr-(--page-x) max-tablet:pl-1"
           >
-            {projectFilters.map(({ type, label }) => (
-              <FilterChip
-                key={type}
-                label={label}
-                count={ofType(type).length}
-                selected={type === filter}
-                onClick={() => setFilter(type)}
-                // Taller invisible hit area for thumbs.
-                className="relative before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-['']"
-              />
-            ))}
+            {/* Only types that have a project in the current results get a chip.
+                "All" and the selected chip always stay, so a filter can be undone. */}
+            {projectFilters
+              .filter(({ type }) => type === "all" || type === filter || ofType(type).length > 0)
+              .map(({ type, label }) => (
+                <FilterChip
+                  key={type}
+                  label={label}
+                  count={ofType(type).length}
+                  selected={type === filter}
+                  onClick={() => setFilter(type)}
+                  // Taller invisible hit area for thumbs.
+                  className="relative before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-['']"
+                />
+              ))}
           </div>
           <p className="t-body-sm ml-auto shrink-0 whitespace-nowrap text-dim max-desktop:mt-1.75 max-tablet:hidden">{projectsPage.sort}</p>
         </div>

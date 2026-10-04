@@ -58,8 +58,18 @@
   --p-mhn: #8b5cf6;
   --p-voice: #10b981;
   --p-backup: #06b6d4;
-  --p-travel: #ec4899;
-  --p-scan: #14b8a6;
+  --p-legend: #f97316;
+  --p-club: #14b8a6;
+  --p-crm: #ec4899;
+  --p-bikri: #84cc16;
+  --p-adventure: #f59e0b;
+  --p-karma: #6366f1;
+  --p-hatti: #d946ef;
+  --p-reisen: #fb7185;
+  --p-pokemon: #eab308;
+  --p-mole: #b08968;
+  --p-foodmandu: #ef4444;
+  --p-bhadakuda: #0ea5e9;
 
   /* Used in Figma without a variable */
   --win-red: #f87171;
@@ -72,7 +82,7 @@
   --page-x: 20px;
   --section-top: 72px;
   --content: 1120px;
-  --header-h: 56px;
+  --header-h: 68px;
 
   /* Motion (design-tokens.md §7) */
   --ease-ui: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -123,16 +133,31 @@
   --color-p-mhn: var(--p-mhn);
   --color-p-voice: var(--p-voice);
   --color-p-backup: var(--p-backup);
-  --color-p-travel: var(--p-travel);
-  --color-p-scan: var(--p-scan);
+  --color-p-legend: var(--p-legend);
+  --color-p-club: var(--p-club);
+  --color-p-crm: var(--p-crm);
+  --color-p-bikri: var(--p-bikri);
+  --color-p-adventure: var(--p-adventure);
+  --color-p-karma: var(--p-karma);
+  --color-p-hatti: var(--p-hatti);
+  --color-p-reisen: var(--p-reisen);
+  --color-p-pokemon: var(--p-pokemon);
+  --color-p-mole: var(--p-mole);
+  --color-p-foodmandu: var(--p-foodmandu);
+  --color-p-bhadakuda: var(--p-bhadakuda);
   --color-win-red: var(--win-red);
   --color-win-yellow: var(--win-yellow);
   --color-win-green: var(--win-green);
   --color-cover-pill: var(--cover-pill);
 
-  --font-display: var(--font-space-grotesk), var(--font-noto-deva), system-ui, sans-serif;
-  --font-sans: var(--font-plex-sans), var(--font-plex-sans-arrows), var(--font-noto-deva), system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), var(--font-plex-mono-symbols), ui-monospace, "SFMono-Regular", monospace;
+  --font-display:
+    var(--font-space-grotesk), var(--font-noto-deva), system-ui, sans-serif;
+  --font-sans:
+    var(--font-plex-sans), var(--font-plex-sans-arrows), var(--font-noto-deva),
+    system-ui, sans-serif;
+  --font-mono:
+    var(--font-plex-mono), var(--font-plex-mono-symbols), ui-monospace,
+    "SFMono-Regular", monospace;
   --font-deva: var(--font-noto-deva), sans-serif;
 
   --radius-*: initial;
@@ -329,7 +354,7 @@
 @utility t-mono-label {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
   letter-spacing: 0;
 }
@@ -457,7 +482,26 @@
   }
 }
 
-/* Reduced motion: no blink, no lift, no slider, no page dissolve. */
+@keyframes skeleton-shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.skeleton-surface {
+  background-color: var(--panel-2);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--fg) 8%, transparent) 50%,
+    transparent 70%
+  );
+  background-position-x: 200%;
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+}
+
+/* Reduced motion: no blink, no lift, no slider, no page dissolve or shimmer. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -466,6 +510,10 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .skeleton-surface {
+    background-image: none;
   }
 }
 
@@ -579,8 +627,12 @@
   padding: 1.5px;
   border-radius: inherit;
   background: linear-gradient(135deg, var(--violet), var(--blue));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   opacity: 0;
   transition: opacity var(--dur-ui) var(--ease-ui);

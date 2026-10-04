@@ -43,8 +43,12 @@ Copy never lives in components: change text, projects, links and contact details
 ## Environment variables
 
 Copy `.env.example` to `.env.local`. `NEXT_PUBLIC_SITE_URL` sets the public origin;
-`RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` make the contact form
-send email.
+the rest configure the contact form, which emails each message to
+`CONTACT_TO_EMAIL` through Gmail SMTP (`GMAIL_USER`, `GMAIL_APP_PASSWORD`) and sends
+the visitor an automatic reply. Bots are stopped by Cloudflare Turnstile
+(`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`), a honeypot field and rate
+limits kept in Upstash Redis (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`).
+The reply's text is `contactEmails` in `content/contact.ts`.
 
 ## Files to add
 

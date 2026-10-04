@@ -14,7 +14,7 @@ these before (or while) building. Nothing below should be guessed silently.
 | 5 | Teal scan-review colour | `#14B8A6` used without a token | Add `--p-scan` |
 | 6 | Extra radii 6/10/14/16/20/24 | Used without tokens | Add tokens (see design-tokens.md) |
 | 7 | Hero H1 54px, mobile room H1 34px | Local overrides, no style | Add `Display/Hero` (54) and `Mobile/Room` (34) text styles |
-| 8 | Contact form delivery | Not specified | Server Action + email service (Resend, etc.) with spam check |
+| 8 | Contact form delivery | Decided | Server Action + Gmail SMTP, Cloudflare Turnstile, Upstash rate limits |
 | 9 | Analytics | Not specified | Privacy-friendly (Plausible / Vercel Analytics) |
 | 10 | Favicon and social image | Not designed | `>_` mark; README hero crop for OG |
 | 11 | Scroll library | Not specified | GSAP ScrollTrigger for the pinned intro (desktop only) |

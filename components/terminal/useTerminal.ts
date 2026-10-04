@@ -25,6 +25,9 @@ export function useTerminal({ menu: menuItems = NO_MENU, main = false }: Termina
   // The Figma frame shows the main terminal with "/" typed and the menu open.
   const [input, setInput] = useState(main ? "/" : "");
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
+  // Where the text caret is in the input. The real input is transparent, so the
+  // mirror needs it to draw the block caret at the right place.
+  const [caret, setCaret] = useState(main ? 1 : 0);
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const historyIndex = useRef<number | null>(null);
@@ -60,15 +63,23 @@ export function useTerminal({ menu: menuItems = NO_MENU, main = false }: Termina
         result.clear ? [] : [...previous, { id: nextId.current++, command, lines: result.lines }],
       );
       setInput("");
+      setCaret(0);
       setSelected(0);
     },
     [run, noteTerminalUse],
   );
 
-  const change = useCallback((value: string) => {
+  // `at` is the caret after the edit; programmatic changes put it at the end.
+  const change = useCallback((value: string, at = value.length) => {
     historyIndex.current = null;
     setSelected(0);
     setInput(value);
+    setCaret(at);
+  }, []);
+
+  /** Follows arrow keys, Home/End, clicks and selection in the real input. */
+  const syncCaret = useCallback((element: HTMLInputElement) => {
+    setCaret(element.selectionEnd ?? element.value.length);
   }, []);
 
   useEffect(() => {
@@ -101,7 +112,9 @@ export function useTerminal({ menu: menuItems = NO_MENU, main = false }: Termina
           const current = historyIndex.current ?? list.length;
           const next = Math.min(Math.max(current + step, 0), list.length);
           historyIndex.current = next === list.length ? null : next;
-          setInput(list[next] ?? "");
+          const recalled = list[next] ?? "";
+          setInput(recalled);
+          setCaret(recalled.length);
           return;
         }
         case "Tab": {
@@ -153,7 +166,9 @@ export function useTerminal({ menu: menuItems = NO_MENU, main = false }: Termina
 
   return {
     input,
+    caret: Math.min(caret, input.length),
     change,
+    syncCaret,
     entries,
     menu,
     menuOpen,

@@ -37,7 +37,8 @@ export function Facts({ project, className }: { project: Project; className?: st
       ))}
       <div className={cn(ROW, "items-center")}>
         <dt className="t-body-sm text-dim">{room.stack}</dt>
-        <dd className="flex items-start gap-1.5">
+        {/* A long stack wraps onto a second row instead of widening the card. */}
+        <dd className="flex min-w-0 flex-wrap items-start justify-end gap-1.5">
           {stack.map((name) => (
             // 30px slots, 28px on mobile (the size prop is an inline style, hence the !).
             <TechLogo key={name} name={name} size={30} labelled className="max-tablet:size-7!" />

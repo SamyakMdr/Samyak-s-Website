@@ -45,7 +45,7 @@ export function Projects() {
                   project={project}
                   layout="feature"
                   width={row.widths[index]}
-                  highlight={rowIndex === 0 && index === 0}
+                  highlight
                 />
               </li>
             ))}
@@ -57,7 +57,7 @@ export function Projects() {
         <ProjectCarousel
           label={projectsSection.title}
           slides={featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} layout="feature" mobileSummary />
+            <ProjectCard key={project.slug} project={project} layout="feature" highlight mobileSummary />
           ))}
         />
         <Button href="/projects" variant="secondary" fullWidth className="py-3.5">

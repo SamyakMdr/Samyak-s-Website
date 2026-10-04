@@ -17,6 +17,7 @@ export function NextProject({ project }: { project: Project }) {
           alt={project.coverAlt}
           fill
           sizes="(min-width: 768px) 200px, calc(100vw - 74px)"
+          loading="lazy"
           className="object-cover"
         />
       </div>

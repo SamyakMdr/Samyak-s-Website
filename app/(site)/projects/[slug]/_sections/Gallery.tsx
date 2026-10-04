@@ -24,6 +24,7 @@ export function Gallery({ screens }: { screens: RoomScreen[] }) {
                   alt={screen.alt}
                   fill
                   sizes="(min-width: 1200px) 550px, 50vw"
+                  loading="lazy"
                   className="object-cover"
                 />
               </div>

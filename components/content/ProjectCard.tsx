@@ -94,7 +94,7 @@ export function ProjectCard({
         </p>
 
         <div className="flex items-center gap-2">
-          <BranchTag tone={project.tone} label={project.branch} className="min-w-0" />
+          <BranchTag color={project.color} label={project.branch} className="min-w-0" />
           <span className="ml-auto flex shrink-0 items-start">
             {project.stack.slice(0, 3).map((name, index) => (
               <TechLogo

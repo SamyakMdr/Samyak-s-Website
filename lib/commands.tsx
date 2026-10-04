@@ -77,7 +77,7 @@ const CommandsContext = createContext<CommandsContextValue | null>(null);
 
 export const HINT_STORAGE_KEY = "terminal-hint-seen";
 
-const PROJECT_TYPES: ProjectType[] = ["web", "backend", "devops", "ai", "ui"];
+const PROJECT_TYPES: ProjectType[] = ["web", "backend", "devops", "ai", "mobile", "ui"];
 const PAGES = ["home", "projects", "experience", "contact"];
 // Home sections that `cd`, `goto` and `git checkout` scroll to, by id.
 const SECTIONS = ["skills", "experience", "education", "services", "contact", "cv", "terminal"];

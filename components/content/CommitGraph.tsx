@@ -72,9 +72,8 @@ function HorizontalGraph({ className }: { className?: string }) {
 
 // Vertical geometry from the Mobile / Home frame: 56px rows, newest first. The
 // frame was edited by hand: main is green, and three branches each span two
-// rows, coloured blue, violet and cyan from the top.
+// rows, each in the colour of the first project it covers.
 const V = { row: 56, mainX: 14, laneX: 34, rail: 66, first: 30 };
-const V_BRANCH_COLORS = ["var(--p-heli)", "var(--p-mhn)", "var(--p-backup)"];
 
 function VerticalGraph({ className }: { className?: string }) {
   const rows = [...graphProjects].reverse();
@@ -86,11 +85,13 @@ function VerticalGraph({ className }: { className?: string }) {
     <div className={cn("relative", className)} style={{ height }}>
       <svg aria-hidden="true" width={V.rail} height={height} className="absolute top-0 left-0 overflow-visible" fill="none">
         <line x1={V.mainX} y1={V.first} x2={V.mainX} y2={lastY} stroke="var(--green)" strokeWidth={2} />
-        {V_BRANCH_COLORS.map((color, index) => {
+        {[0, 1, 2].map((index) => {
+          const color = rows[index * 2]?.color;
+          if (!color) return null;
           const s = V.first + index * V.row * 2;
           const end = s + V.row * 2;
           return (
-            <g key={color}>
+            <g key={index}>
               <path
                 d={`M ${V.mainX} ${s} C ${V.mainX} ${s + 10} ${V.laneX} ${s + 7} ${V.laneX} ${s + 17} L ${V.laneX} ${end - 17} C ${V.laneX} ${end - 7} ${V.mainX} ${end - 10} ${V.mainX} ${end}`}
                 stroke={color}

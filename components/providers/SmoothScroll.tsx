@@ -7,7 +7,7 @@ import { requestAnchor, scrollToId, setLenis, settleScroll } from "@/lib/scroll"
 
 // Smooth scrolling on desktop pointers only; touch and reduced motion keep the
 // native scroller. Also routes in-page anchor clicks through the same scroller
-// so they land 56px below the fixed header.
+// so they land 68px below the fixed header.
 export function SmoothScroll() {
   const pathname = usePathname();
 

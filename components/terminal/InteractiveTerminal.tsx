@@ -7,7 +7,7 @@ import { a11y } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 import { loadOutput, TerminalOutput } from "./TerminalOutputLazy";
-import { Caret, TerminalWindow } from "./TerminalWindow";
+import { TerminalWindow, TypedText } from "./TerminalWindow";
 import { useTerminal } from "./useTerminal";
 
 // One terminal for every width: the mobile frame only swaps copy and drops the
@@ -24,7 +24,7 @@ function Swap({ desktop, mobile }: { desktop: string; mobile?: string }) {
 
 export function InteractiveTerminal({ className }: { className?: string }) {
   const terminal = useTerminal({ menu: slashMenu, main: true });
-  const { input, entries, menu, menuOpen, activeIndex, suggestion, inputRef } = terminal;
+  const { input, caret, entries, menu, menuOpen, activeIndex, suggestion, inputRef } = terminal;
   const log = useRef<HTMLDivElement>(null);
   const inputId = useId();
   const listId = useId();
@@ -98,16 +98,15 @@ export function InteractiveTerminal({ className }: { className?: string }) {
           {/* The real input is transparent; the mirror draws text, ghost and block caret. */}
           <div className="relative min-w-0 flex-1">
             <div aria-hidden="true" className="flex items-center whitespace-pre">
-              <span className="text-code-fg">{input}</span>
-              {suggestion && <span className="text-dim">{suggestion}</span>}
-              <Caret className={cn(input || suggestion ? "ml-2 tablet:ml-2.5" : "")} />
+              <TypedText input={input} caret={caret} suggestion={suggestion} textClassName="text-code-fg" />
               {!input && <span className="ml-2 truncate text-dim tablet:ml-2.5">{terminalCopy.idleHint}</span>}
             </div>
             <input
               ref={inputRef}
               id={inputId}
               value={input}
-              onChange={(event) => terminal.change(event.target.value)}
+              onChange={(event) => terminal.change(event.target.value, event.target.selectionEnd ?? undefined)}
+              onSelect={(event) => terminal.syncCaret(event.currentTarget)}
               onKeyDown={terminal.onKeyDown}
               onFocus={() => {
                 terminal.noteTerminalUse();

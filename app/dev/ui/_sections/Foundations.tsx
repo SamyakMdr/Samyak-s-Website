@@ -2,7 +2,7 @@ const COLORS = [
   "bg", "panel", "panel-2", "panel-hover", "line", "fg", "dim", "code-bg", "code-fg",
   "blue", "blue-t", "blue-hover", "blue-pressed", "green", "green-t", "violet", "violet-t",
   "warn", "bad", "focus", "on-accent",
-  "p-heli", "p-mhn", "p-voice", "p-backup", "p-travel", "p-scan",
+  "p-heli", "p-mhn", "p-voice", "p-backup", "p-legend", "p-club", "p-crm", "p-bikri", "p-adventure", "p-karma", "p-hatti", "p-reisen", "p-pokemon", "p-mole", "p-foodmandu", "p-bhadakuda",
 ] as const;
 
 const TEXT_STYLES = [
