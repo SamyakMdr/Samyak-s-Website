@@ -550,7 +550,7 @@ export const projects: Project[] = [
     year: 2026,
     branch: "feature/bikri-ai",
     color: "var(--p-bikri)",
-    stack: ["React Native", "FastAPI", "PostgreSQL"],
+    stack: ["React Native", "Python", "FastAPI", "PostgreSQL"],
     cover: "/images/projects/cover-bikri-ai.webp",
     coverAlt:
       "Bikri AI inventory dashboard with stock information and business insights",
@@ -578,6 +578,7 @@ export const projects: Project[] = [
 
       stack: [
         "React Native",
+        "Python",
         "TypeScript",
         "FastAPI",
         "PostgreSQL",

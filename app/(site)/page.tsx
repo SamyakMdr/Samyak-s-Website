@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { StackSlider } from "@/components/content/StackSlider";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { JsonLd } from "@/components/layout/JsonLd";
 import { seo } from "@/content/site";
 import { pageMetadata, personJsonLd } from "@/lib/seo";
@@ -17,7 +18,8 @@ import { TerminalSection } from "./_sections/TerminalSection";
 
 export const metadata: Metadata = pageMetadata({ ...seo.home, path: "/" });
 
-// Sections in Figma order. The hero panel inside the intro carries id="main".
+// Sections in Figma order. From Skills down they fade in on scroll (<ScrollReveal>).
+// The hero panel inside the intro carries id="main".
 export default function HomePage() {
   return (
     <main className="pt-(--header-h)">
@@ -32,6 +34,7 @@ export default function HomePage() {
       <Services />
       <CVBand />
       <Contact />
+      <ScrollReveal />
     </main>
   );
 }

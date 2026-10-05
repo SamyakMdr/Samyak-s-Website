@@ -18,9 +18,10 @@ export function Education() {
         intro={educationSection.intro}
         introMobile={educationSection.introMobile}
         titleId="education-title"
+        reveal
       />
       <div className="flex flex-col gap-5 desktop:flex-row desktop:items-start desktop:gap-10">
-        <ol className="flex min-w-0 flex-col desktop:flex-1">
+        <ol data-reveal="" className="flex min-w-0 flex-col desktop:flex-1">
           {education.map((entry, index) => (
             <TimelineItem
               key={entry.hash}
@@ -32,7 +33,7 @@ export function Education() {
           ))}
         </ol>
 
-        <aside className="rounded-card border border-line bg-panel p-4.5 tablet:px-6 tablet:pt-5 tablet:pb-2 desktop:w-100 desktop:shrink-0">
+        <aside data-reveal="" className="rounded-card border border-line bg-panel p-4.5 tablet:px-6 tablet:pt-5 tablet:pb-2 desktop:w-100 desktop:shrink-0">
           <div className="flex flex-col gap-1 pb-1.5">
             <h3 className="t-h4 text-fg">{activitiesBox.title}</h3>
             <p className="t-body-sm text-dim">{activitiesBox.text}</p>

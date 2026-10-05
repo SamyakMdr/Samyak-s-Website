@@ -26,6 +26,7 @@ export function Services() {
         intro={servicesSection.intro}
         introMobile={false}
         titleId="services-title"
+        reveal
       />
       <ul className="grid gap-5 tablet:grid-cols-3">
         {services.map((service) => {
@@ -33,6 +34,7 @@ export function Services() {
           return (
             <li
               key={service.title}
+              data-reveal=""
               className="flex flex-col gap-3 rounded-card border border-line bg-panel p-4.5 tablet:rounded-lg tablet:p-6"
             >
               {/* The mobile cards have no icon tile. */}

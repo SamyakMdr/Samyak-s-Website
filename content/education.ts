@@ -44,7 +44,7 @@ export const education: TimelineEntry[] = [
     summaryMobile: "Science stream with mathematics and computer science.",
     summary:
       "I wrote my first HTML and CSS code in this period, and learned the basics of programming.",
-    hash: "0c93f2d",
+    hash: "5d18ae6",
     commit: "learn: hello world in HTML, CSS and JS",
   },
 ];

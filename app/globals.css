@@ -825,3 +825,18 @@ html.custom-cursor * {
     animation-play-state: running;
   }
 }
+
+/* Scroll reveal (Home): <ScrollReveal> hides [data-reveal] elements that start
+   below the fold, then fades each one in, once, as it scrolls into view. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  [data-reveal="pending"] {
+    opacity: 0;
+    translate: 0 16px;
+  }
+
+  [data-reveal="in"] {
+    transition:
+      opacity 500ms var(--ease-ui) var(--reveal-delay, 0ms),
+      translate 500ms var(--ease-ui) var(--reveal-delay, 0ms);
+  }
+}

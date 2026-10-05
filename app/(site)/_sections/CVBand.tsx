@@ -18,7 +18,7 @@ function Lines({ lines }: { lines: readonly Line[] }) {
 export function CVBand() {
   return (
     <section id={cvBand.id} aria-labelledby="cv-title" className="page-x section-top">
-      <div className="flex flex-col gap-3.5 rounded-2xl border border-line bg-panel p-5.5 desktop:flex-row desktop:items-center desktop:gap-12 desktop:p-12">
+      <div data-reveal="" className="flex flex-col gap-3.5 rounded-2xl border border-line bg-panel p-5.5 desktop:flex-row desktop:items-center desktop:gap-12 desktop:p-12">
         <div className="flex min-w-0 flex-col gap-3.5 desktop:flex-1 desktop:items-start desktop:gap-4">
           <h2 id="cv-title" className="t-h2 text-fg">
             {cvBand.title}

@@ -82,16 +82,20 @@ export function ProjectCard({
 
       <div className={cn("flex flex-1 flex-col gap-2.5", feature ? "px-1 pt-1" : "px-4.5 pt-4 pb-4.5")}>
         <Title className="t-h3 text-fg">{project.title}</Title>
-        <p className="t-body-sm text-dim">
-          {mobileSummary && project.summaryMobile ? (
-            <>
-              <span className="tablet:hidden">{project.summaryMobile}</span>
-              <span className="max-tablet:hidden">{project.summary}</span>
-            </>
-          ) : (
-            project.summary
-          )}
-        </p>
+        {/* The summary takes the spare height and is cut at a fixed number of lines, so the
+            tag row and footer sit at the bottom of every card in a row. */}
+        <div className="flex-1">
+          <p className={cn("t-body-sm text-dim", feature ? "line-clamp-4" : "line-clamp-3")}>
+            {mobileSummary && project.summaryMobile ? (
+              <>
+                <span className="tablet:hidden">{project.summaryMobile}</span>
+                <span className="max-tablet:hidden">{project.summary}</span>
+              </>
+            ) : (
+              project.summary
+            )}
+          </p>
+        </div>
 
         <div className="flex items-center gap-2">
           <BranchTag color={project.color} label={project.branch} className="min-w-0" />
@@ -109,7 +113,6 @@ export function ProjectCard({
           </span>
         </div>
 
-        {/* Cards stretch to the tallest in their row; the content stays at the top, as in Figma. */}
         <span aria-hidden="true" className="h-px shrink-0 bg-line" />
 
         <div className="flex items-center justify-between">

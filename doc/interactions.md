@@ -182,4 +182,10 @@ challenge (verified on the server), backed by a honeypot field and rate limits (
 
 ## 14. Reduced motion
 `@media (prefers-reduced-motion: reduce)`: no sideways intro (stack), no slider motion,
-no cursor, no blink, instant scrolling, no card lift.
+no cursor, no blink, instant scrolling, no card lift, no scroll reveal.
+
+## 15. Scroll reveal (Home, not in Figma)
+From Skills down, each section head and card fades in and rises 16px (500ms) the first
+time it scrolls into view; elements that arrive together are 70ms apart. Mark an element
+with `data-reveal`; `<ScrollReveal>` only hides what starts below the fold, so the page is
+complete without JavaScript.

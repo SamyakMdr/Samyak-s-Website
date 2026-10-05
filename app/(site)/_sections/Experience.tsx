@@ -7,7 +7,7 @@ import { site } from "@/content/site";
 
 function CvCard() {
   return (
-    <aside className="flex flex-col gap-3 overflow-hidden rounded-lg border border-line bg-panel p-4.5 tablet:w-90 tablet:shrink-0 tablet:gap-3.5 tablet:p-6">
+    <aside data-reveal="" className="flex flex-col gap-3 overflow-hidden rounded-lg border border-line bg-panel p-4.5 tablet:w-90 tablet:shrink-0 tablet:gap-3.5 tablet:p-6">
       <h3 className="t-h3 text-fg">{cvCard.title}</h3>
       <p className="t-body-sm text-dim max-tablet:hidden">{cvCard.text}</p>
       <p className="t-body-sm text-dim tablet:hidden">{cvCard.textMobile}</p>
@@ -41,9 +41,10 @@ export function Experience() {
         intro={experienceSection.intro}
         introMobile={experienceSection.introMobile}
         titleId="experience-title"
+        reveal
       />
       <div className="flex flex-col gap-5 desktop:flex-row desktop:items-start desktop:gap-10">
-        <ol className="flex min-w-0 flex-col desktop:w-180 desktop:shrink-0">
+        <ol data-reveal="" className="flex min-w-0 flex-col desktop:w-180 desktop:shrink-0">
           {experience.map((entry, index) => (
             <TimelineItem
               key={entry.hash}

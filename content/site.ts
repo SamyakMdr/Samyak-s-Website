@@ -94,7 +94,7 @@ export const hero = {
   file: "README.md",
   fileMeta: "main · HEAD · updated 2 days ago",
   fileMetaMobile: "main · HEAD",
-  badge: "Open to junior roles and freelance work",
+  badge: "Open to part-time & freelance",
   title: "I'm Samyak Manandhar and Welcome to My Space.",
   intro:
     "I’m a full-stack developer building modern, scalable, and user-focused web applications with TypeScript, NestJS, PostgreSQL, and React.",
@@ -178,8 +178,7 @@ export const projectsPage = {
   title: "All projects",
   intro:
     "Builds across web apps, mobile, AI and DevOps. Filter by type or search by tool.",
-  introMobile:
-    "Builds across web apps, mobile, AI and DevOps.",
+  introMobile: "Builds across web apps, mobile, AI and DevOps.",
   searchPlaceholder: "filter by name or tool, e.g. nestjs",
   searchPlaceholderMobile: "filter, e.g. nestjs",
   searchLabel: "Filter projects",
@@ -251,8 +250,14 @@ export const footer = {
       /** Hidden on mobile, which shows two columns. */
       desktopOnly: true,
       links: [
-        { label: "Helicopter operations system", href: "/projects/mountain-helicopter-system" },
-        { label: "Mountain Helicopter Nepal website", href: "/projects/mountain-helicopter-website" },
+        {
+          label: "Helicopter operations system",
+          href: "/projects/mountain-helicopter-system",
+        },
+        {
+          label: "Mountain Helicopter Nepal website",
+          href: "/projects/mountain-helicopter-website",
+        },
         { label: "Nepali voice inventory", href: "/projects/nepali-voice" },
         { label: "All projects", href: "/projects" },
       ],

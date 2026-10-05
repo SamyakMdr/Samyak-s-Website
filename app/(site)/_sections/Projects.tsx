@@ -21,7 +21,7 @@ export function Projects() {
       aria-labelledby="projects-title"
       className="page-x section-top flex flex-col gap-5 tablet:gap-8"
     >
-      <div className="flex items-end gap-6">
+      <div data-reveal="" className="flex items-end gap-6">
         <SectionHead
           title={projectsSection.title}
           tone={projectsSection.tone}
@@ -40,7 +40,7 @@ export function Projects() {
         {ROWS.map((row, rowIndex) => (
           <ul key={row.columns + rowIndex} className={cn("grid grid-cols-2 gap-4.5", row.columns)}>
             {featuredProjects.slice(rowIndex * 2, rowIndex * 2 + 2).map((project, index) => (
-              <li key={project.slug} className="min-w-0">
+              <li key={project.slug} data-reveal="" className="min-w-0">
                 <ProjectCard
                   project={project}
                   layout="feature"
@@ -53,7 +53,7 @@ export function Projects() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-5 tablet:hidden">
+      <div data-reveal="" className="flex flex-col gap-5 tablet:hidden">
         <ProjectCarousel
           label={projectsSection.title}
           slides={featuredProjects.map((project) => (

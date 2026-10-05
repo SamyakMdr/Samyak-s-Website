@@ -16,11 +16,13 @@ export function Skills() {
         intro={skillsSection.intro}
         introMobile={skillsSection.introMobile}
         titleId="skills-title"
+        reveal
       />
       <ul className="grid gap-5 tablet:grid-cols-2">
         {skillGroups.map((group) => (
           <li
             key={group.title}
+            data-reveal=""
             className="flex flex-col gap-3 overflow-hidden rounded-lg border border-line bg-panel p-4.5 tablet:p-6"
           >
             <h3 className="t-h3 text-fg">{group.title}</h3>

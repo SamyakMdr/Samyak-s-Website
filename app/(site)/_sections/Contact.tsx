@@ -10,7 +10,7 @@ import { ContactFormLazy } from "./ContactFormLazy";
 
 function ContactCard() {
   return (
-    <aside className="flex flex-col gap-3.5 rounded-lg border border-line bg-panel p-4.5 tablet:gap-4.5 tablet:p-6 desktop:w-95 desktop:shrink-0">
+    <aside data-reveal="" className="flex flex-col gap-3.5 rounded-lg border border-line bg-panel p-4.5 tablet:gap-4.5 tablet:p-6 desktop:w-95 desktop:shrink-0">
       <div className="flex items-center gap-3.5">
         <Image
           src={contactCard.avatar.src}
@@ -81,10 +81,13 @@ export function Contact() {
         intro={contactSection.intro}
         introMobile={contactSection.introMobile}
         titleId="contact-title"
+        reveal
       />
       <div className="flex flex-col gap-5 desktop:flex-row desktop:items-start desktop:gap-6">
         <ContactCard />
-        <ContactFormLazy className="min-w-0 desktop:flex-1" />
+        <div data-reveal="" className="min-w-0 desktop:flex-1">
+          <ContactFormLazy />
+        </div>
       </div>
     </section>
   );
