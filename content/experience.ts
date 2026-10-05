@@ -40,7 +40,7 @@ export const experience: TimelineEntry[] = [
   },
   {
     title: "Front End Developer Trainee",
-    dates: "Feb 2026 – August 2026",
+    dates: "Feb 2026 – Jul 2026",
     place: "Rewa Soft Pvt. Ltd. · Lumbini Marg, Kathmandu, Nepal · Internship",
     placeMobile: "Rewa Soft Pvt. Ltd. · Lumbini Marg, Kathmandu, Nepal",
     summaryMobile: "Frontend development, REST APIs and CMS Dashboards.",
