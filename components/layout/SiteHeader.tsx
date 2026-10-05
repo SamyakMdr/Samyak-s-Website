@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Kbd } from "@/components/ui/Kbd";
 import { NavTab } from "@/components/ui/NavTab";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { a11y, header, hero, nav } from "@/content/site";
+import { a11y, header, nav, site } from "@/content/site";
 import { useCommands } from "@/lib/commands";
 import { useIsApple } from "@/lib/platform";
 import { useActiveSection } from "@/lib/useActiveSection";
@@ -95,7 +95,7 @@ export function SiteHeader() {
               <span className="t-body-sm text-dim">{header.command}</span>
               <Kbd>{apple ? header.commandKeys.apple : header.commandKeys.other}</Kbd>
             </button>
-            <Button href={hero.primary.href} variant="primary" size="sm" icon="download">
+            <Button href={site.cv.href} download={site.cv.file} variant="primary" size="sm" icon="download">
               {header.cv}
             </Button>
             <ThemeToggle />

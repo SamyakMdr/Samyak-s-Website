@@ -10,7 +10,7 @@ import { MotionProvider } from "@/components/providers/MotionProvider";
 import { Button } from "@/components/ui/Button";
 import { TechLogo } from "@/components/ui/TechLogo";
 import { socials } from "@/content/contact";
-import { a11y, header, hero, mobileMenu, nav } from "@/content/site";
+import { a11y, header, mobileMenu, nav, site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { Brand } from "./Brand";
 
@@ -123,7 +123,7 @@ export default function MobileMenu({ open, onClose, activeBranch }: MobileMenuPr
             </nav>
 
             <div className="page-x flex flex-col gap-3.5 pt-1 pb-8">
-              <Button href={hero.primary.href} onClick={onClose} variant="primary" icon="download" fullWidth className="py-3.5">
+              <Button href={site.cv.href} download={site.cv.file} onClick={onClose} variant="primary" icon="download" fullWidth className="py-3.5">
                 {header.cv}
               </Button>
 
