@@ -31,11 +31,12 @@ export function TerminalShell({ children, className, entryClassName, caretClassN
   const inputId = useId();
   const scrolls = entries.length > 0;
 
-  // Keep the prompt in view, with the newest output just above it.
+  // Keep the prompt in view, with the newest output just above it. At rest the
+  // frame holds everything, and measuring it on mount would force a layout.
   useEffect(() => {
     const element = screen.current;
-    if (element) element.scrollTop = element.scrollHeight;
-  }, [entries, input]);
+    if (element && scrolls) element.scrollTop = element.scrollHeight;
+  }, [entries, input, scrolls]);
 
   // Output lands a moment after its command (its code is fetched on first use,
   // project covers later still), so the screen also follows the log as it grows.
