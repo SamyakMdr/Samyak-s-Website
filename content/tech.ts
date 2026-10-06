@@ -5,8 +5,8 @@ export interface Tech {
   monogram: string;
   tile: string;
   ink: string;
-  /** public/logos/<slug>.svg exists, or <slug>.png for a mark only published as an image. */
-  logo?: boolean | "png";
+  /** public/logos/<slug>.svg exists, or <slug>.webp (80px, twice the largest slot) for a mark only published as an image. */
+  logo?: boolean | "webp";
   /** public/logos/<slug>-dark.svg also exists: the drawing for dark surfaces, for marks whose colour only suits one theme. */
   darkLogo?: boolean;
 }
@@ -36,7 +36,7 @@ export const tech = {
   NativeWind: { slug: "nativewind", monogram: "Nw", tile: "#111111", ink: "#FFFFFF", logo: true },
   "Material UI": { slug: "materialui", monogram: "Mu", tile: "#007FFF", ink: "#FFFFFF", logo: true },
   Bootstrap: { slug: "bootstrap", monogram: "B", tile: "#7952B3", ink: "#FFFFFF", logo: true },
-  TanStack: { slug: "tanstack", monogram: "Tk", tile: "#111111", ink: "#FFFFFF", logo: "png" },
+  TanStack: { slug: "tanstack", monogram: "Tk", tile: "#111111", ink: "#FFFFFF", logo: "webp" },
   jQuery: { slug: "jquery", monogram: "jQ", tile: "#0769AD", ink: "#FFFFFF", logo: true },
   Vite: { slug: "vite", monogram: "Vi", tile: "#646CFF", ink: "#FFFFFF", logo: true },
   "Redux Toolkit": { slug: "redux-toolkit", monogram: "Rx", tile: "#764ABC", ink: "#FFFFFF", logo: true },

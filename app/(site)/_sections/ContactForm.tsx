@@ -1,15 +1,14 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, type BaseSyntheticEvent, type FormEvent } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { sendContactMessage } from "@/app/actions/contact";
 import { BranchTag } from "@/components/ui/BranchTag";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { contactForm } from "@/content/contact";
 import { cn } from "@/lib/cn";
-import { contactSchema, type ContactFailure, type ContactValues } from "@/lib/contact";
+import type { ContactFailure, ContactValues } from "@/lib/contact";
 import { prefersReducedMotion } from "@/lib/scroll";
 import { useTurnstile } from "@/lib/useTurnstile";
 
@@ -28,6 +27,22 @@ const GLYPHS: Record<CheckState, { glyph: string; className: string }> = {
   passed: { glyph: "✓", className: "text-green-t" },
   failed: { glyph: "✗", className: "text-bad" },
 };
+
+// The validation rules (zod) are the largest part of the form and are only
+// needed to submit it, so they are fetched once someone starts writing.
+let rules: Promise<Resolver<ContactValues>> | null = null;
+function loadRules(): Promise<Resolver<ContactValues>> {
+  rules ??= Promise.all([import("@hookform/resolvers/zod"), import("@/lib/contact")]).then(
+    ([{ zodResolver }, { contactSchema }]) => zodResolver(contactSchema),
+  );
+  // A failed download is tried again on the next focus or submit.
+  rules.catch(() => {
+    rules = null;
+  });
+  return rules;
+}
+const resolver: Resolver<ContactValues> = async (values, context, options) =>
+  (await loadRules())(values, context, options);
 
 // The description starts one line tall and grows with the message. Done by
 // hand because `field-sizing: content` would also size to the placeholder.
@@ -58,7 +73,7 @@ export function ContactForm({ className }: { className?: string }) {
     reset,
     formState: { errors },
   } = useForm<ContactValues>({
-    resolver: zodResolver(contactSchema),
+    resolver,
     defaultValues: { name: "", email: "", title: "", description: "", company: "" },
   });
 
@@ -108,9 +123,19 @@ export function ContactForm({ className }: { className?: string }) {
 
   return (
     <form
-      onSubmit={handleSubmit(onValid)}
-      // Fetch Turnstile once someone starts writing, not on page load.
-      onFocusCapture={() => void prepareTurnstile().catch(() => {})}
+      onSubmit={(event) =>
+        // Only rejects when the rules could not be fetched (offline).
+        void handleSubmit(onValid)(event).catch(() => {
+          setChecks({});
+          setFailure("failed");
+          setStatus("error");
+        })
+      }
+      // Fetch the rules and Turnstile once someone starts writing, not on page load.
+      onFocusCapture={() => {
+        void loadRules().catch(() => {});
+        void prepareTurnstile().catch(() => {});
+      }}
       noValidate
       aria-label={contactForm.label}
       className={cn("overflow-hidden rounded-lg border border-line bg-panel", className)}

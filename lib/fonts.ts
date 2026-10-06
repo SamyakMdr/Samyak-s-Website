@@ -55,7 +55,9 @@ export const plexMonoSymbols = localFont({
     { path: "../app/fonts/plex-mono-symbols-500.woff2", weight: "500" },
   ],
   display: "swap",
-  preload: false,
+  // Preloaded: the first screen of Home shows these glyphs, and without the hint
+  // the file is only found once the stylesheet has loaded.
+  preload: true,
   adjustFontFallback: false,
   variable: "--font-plex-mono-symbols",
   declarations: [{ prop: "unicode-range", value: "U+2190, U+2192, U+2713" }],

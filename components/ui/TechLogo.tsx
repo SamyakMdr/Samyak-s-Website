@@ -40,7 +40,7 @@ export function TechLogo({ name, size = 40, ring = false, labelled = false, mono
   }
 
   if (entry.logo) {
-    const src = `/logos/${slug}.${entry.logo === "png" ? "png" : "svg"}`;
+    const src = `/logos/${slug}.${entry.logo === "webp" ? "webp" : "svg"}`;
     // Marks drawn in black or navy come with a light version for dark surfaces.
     const dark = entry.darkLogo ? `/logos/${slug}-dark.svg` : null;
     return (
