@@ -9,7 +9,7 @@ export const site = {
   location: "Kathmandu, Nepal",
   city: "Kathmandu",
   country: "Nepal",
-  url: "https://samyakmanandhar.com.np",
+  url: "https://www.samyakmanandhar.com.np",
   cv: {
     href: "/cv/samyak-cv.pdf",
     file: "samyak-cv.pdf",
