@@ -138,7 +138,7 @@ export default function MobileMenu({ open, onClose, activeBranch }: MobileMenuPr
                       aria-pressed={resolvedTheme === theme}
                       className={cn(
                         "t-btn-sm px-3 py-1.5",
-                        resolvedTheme === theme ? "rounded-sm bg-blue text-on-accent" : "text-dim",
+                        resolvedTheme === theme ? "rounded-sm bg-blue-hover text-on-accent" : "text-dim",
                       )}
                     >
                       {mobileMenu[theme]}

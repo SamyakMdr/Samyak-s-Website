@@ -20,7 +20,8 @@ const button = cva(
     variants: {
       variant: {
         primary: [
-          "bg-blue text-on-accent hover:bg-blue-hover active:bg-blue-pressed active:shadow-pressed",
+          // One step darker than --blue: white text on #3b82f6 is 3.7:1, below the 4.5:1 that WCAG AA asks for.
+          "bg-blue-hover text-on-accent hover:bg-blue-pressed active:bg-blue-pressed active:shadow-pressed",
           "disabled:bg-line disabled:text-dim aria-disabled:bg-line aria-disabled:text-dim",
         ],
         secondary: [
