@@ -20,7 +20,8 @@ const CHECK_ORDER: CheckKey[] = ["validate", "spam", "send"];
 // How long each quick check stays "running" before it turns green.
 const STEP = 420;
 
-const pause = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+const pause = (ms: number) =>
+  new Promise<void>((resolve) => window.setTimeout(resolve, ms));
 
 const GLYPHS: Record<CheckState, { glyph: string; className: string }> = {
   running: { glyph: "→", className: "text-dim" },
@@ -32,9 +33,10 @@ const GLYPHS: Record<CheckState, { glyph: string; className: string }> = {
 // needed to submit it, so they are fetched once someone starts writing.
 let rules: Promise<Resolver<ContactValues>> | null = null;
 function loadRules(): Promise<Resolver<ContactValues>> {
-  rules ??= Promise.all([import("@hookform/resolvers/zod"), import("@/lib/contact")]).then(
-    ([{ zodResolver }, { contactSchema }]) => zodResolver(contactSchema),
-  );
+  rules ??= Promise.all([
+    import("@hookform/resolvers/zod"),
+    import("@/lib/contact"),
+  ]).then(([{ zodResolver }, { contactSchema }]) => zodResolver(contactSchema));
   // A failed download is tried again on the next focus or submit.
   rules.catch(() => {
     rules = null;
@@ -58,7 +60,9 @@ function growToContent(event: FormEvent<HTMLTextAreaElement>) {
 export function ContactForm({ className }: { className?: string }) {
   const { fields } = contactForm;
   const [status, setStatus] = useState<Status>("idle");
-  const [checks, setChecks] = useState<Partial<Record<CheckKey, CheckState>>>({});
+  const [checks, setChecks] = useState<Partial<Record<CheckKey, CheckState>>>(
+    {},
+  );
   const [failure, setFailure] = useState<ContactFailure>("failed");
   const {
     enabled: turnstileEnabled,
@@ -74,7 +78,13 @@ export function ContactForm({ className }: { className?: string }) {
     formState: { errors },
   } = useForm<ContactValues>({
     resolver,
-    defaultValues: { name: "", email: "", title: "", description: "", company: "" },
+    defaultValues: {
+      name: "",
+      email: "",
+      title: "",
+      description: "",
+      company: "",
+    },
   });
 
   const onValid = async (values: ContactValues, event?: BaseSyntheticEvent) => {
@@ -96,7 +106,10 @@ export function ContactForm({ className }: { className?: string }) {
     }
     setChecks({ validate: "passed", spam: "passed", send: "running" });
 
-    const result = await sendContactMessage({ ...values, turnstileToken }).catch(() => ({
+    const result = await sendContactMessage({
+      ...values,
+      turnstileToken,
+    }).catch(() => ({
       ok: false as const,
       reason: "failed" as const,
     }));
@@ -119,7 +132,9 @@ export function ContactForm({ className }: { className?: string }) {
 
   const busy = status === "checking";
   const failureText =
-    failure === "bot" || failure === "rate-limited" ? contactForm.failures[failure] : contactForm.failure;
+    failure === "bot" || failure === "rate-limited"
+      ? contactForm.failures[failure]
+      : contactForm.failure;
 
   return (
     <form
@@ -138,13 +153,26 @@ export function ContactForm({ className }: { className?: string }) {
       }}
       noValidate
       aria-label={contactForm.label}
-      className={cn("overflow-hidden rounded-lg border border-line bg-panel", className)}
+      className={cn(
+        "overflow-hidden rounded-lg border border-line bg-panel",
+        className,
+      )}
     >
       <div className="flex flex-wrap items-center gap-2.5 px-4.5 pt-4.5 tablet:bg-panel-2 tablet:px-5 tablet:py-3.5">
-        <BranchTag tone={contactForm.from.tone} label={contactForm.from.branch} />
-        <span className="t-body-sm text-dim max-tablet:hidden">{contactForm.mergeText}</span>
-        <span className="t-body-sm text-dim tablet:hidden">{contactForm.mergeTextMobile}</span>
-        <BranchTag tone={contactForm.into.tone} label={contactForm.into.branch} />
+        <BranchTag
+          tone={contactForm.from.tone}
+          label={contactForm.from.branch}
+        />
+        <span className="t-body-sm text-dim max-tablet:hidden">
+          {contactForm.mergeText}
+        </span>
+        <span className="t-body-sm text-dim tablet:hidden">
+          {contactForm.mergeTextMobile}
+        </span>
+        <BranchTag
+          tone={contactForm.into.tone}
+          label={contactForm.into.branch}
+        />
       </div>
 
       <div className="flex flex-col gap-3.5 px-4.5 pt-3.5 pb-4.5 tablet:gap-4 tablet:p-6">
@@ -194,30 +222,56 @@ export function ContactForm({ className }: { className?: string }) {
 
         {/* Out of the layout until Cloudflare asks the visitor to click. */}
         {turnstileEnabled && (
-          <div ref={turnstileContainer} className={cn(!turnstileInteractive && "absolute size-0 overflow-hidden")} />
+          <div
+            ref={turnstileContainer}
+            className={cn(
+              !turnstileInteractive && "absolute size-0 overflow-hidden",
+            )}
+          />
         )}
 
         <div className="flex items-center gap-3.5">
-          <Button type="submit" variant="primary" fullWidth="mobile" disabled={busy}>
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth="mobile"
+            disabled={busy}
+          >
             {contactForm.submit}
           </Button>
-          <p className="t-body-sm text-dim max-tablet:hidden">{contactForm.note}</p>
+          <p className="t-body-sm text-dim max-tablet:hidden">
+            {contactForm.note}
+          </p>
         </div>
 
-        <div role="status" aria-label={contactForm.checksLabel} className="flex flex-col gap-1 empty:hidden">
+        <div
+          role="status"
+          aria-label={contactForm.checksLabel}
+          className="flex flex-col gap-1 empty:hidden"
+        >
           {status !== "idle" &&
             CHECK_ORDER.map((key) => {
               const state = checks[key];
               if (!state) return null;
               return (
                 <p key={key} className="t-mono-sm flex items-center gap-2">
-                  <span className={GLYPHS[state].className}>{GLYPHS[state].glyph}</span>
-                  <span className={state === "running" ? "text-dim" : "text-fg"}>{contactForm.checks[key]}</span>
+                  <span className={GLYPHS[state].className}>
+                    {GLYPHS[state].glyph}
+                  </span>
+                  <span
+                    className={state === "running" ? "text-dim" : "text-fg"}
+                  >
+                    {contactForm.checks[key]}
+                  </span>
                 </p>
               );
             })}
-          {status === "sent" && <p className="t-body-sm pt-1 text-fg">{contactForm.success}</p>}
-          {status === "error" && <p className="t-body-sm pt-1 text-bad">{failureText}</p>}
+          {status === "sent" && (
+            <p className="t-body-sm pt-1 text-fg">{contactForm.success}</p>
+          )}
+          {status === "error" && (
+            <p className="t-body-sm pt-1 text-bad">{failureText}</p>
+          )}
         </div>
       </div>
     </form>
