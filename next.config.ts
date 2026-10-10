@@ -45,6 +45,9 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   experimental: {
+    // Remove the render-blocking stylesheet request on first visits. The
+    // generated Tailwind bundle is small enough to inline with the HTML.
+    inlineCss: true,
     // A contact message is at most a few KB; refuse anything bigger early.
     serverActions: { bodySizeLimit: "32kb" },
   },

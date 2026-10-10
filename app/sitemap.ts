@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absoluteUrl(projectHref(project)),
       changeFrequency: "yearly" as const,
       priority: project.featured ? 0.7 : 0.5,
+      images: [absoluteUrl(project.cover)],
     })),
   ];
 }

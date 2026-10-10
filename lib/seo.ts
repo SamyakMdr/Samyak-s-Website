@@ -4,8 +4,8 @@ import { projectHref } from "@/content/projects";
 import { seo, site } from "@/content/site";
 import type { Project } from "@/content/types";
 
-/** Public origin. Set NEXT_PUBLIC_SITE_URL when deploying; the fallback is the placeholder domain. */
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? site.url).replace(/\/+$/, "");
+/** The one public origin used by canonicals, structured data and crawler files. */
+export const siteUrl = site.url.replace(/\/+$/, "");
 
 export function absoluteUrl(path = "/"): string {
   return new URL(path, `${siteUrl}/`).toString();
@@ -27,19 +27,20 @@ export function pageMetadata({ title, description, path, image }: PageSeo): Meta
     title,
     description,
     alternates: { canonical: path },
-    openGraph: { type: "website", siteName: site.name, locale: "en", url: path, title, description, images: [share] },
+    robots: { index: true, follow: true },
+    openGraph: { type: "website", siteName: site.fullName, locale: "en", url: path, title, description, images: [share] },
     twitter: { card: "summary_large_image", title, description, images: [share.url] },
   };
 }
 
-const author = { "@type": "Person", name: site.name, url: siteUrl };
+const author = { "@type": "Person", name: site.fullName, url: siteUrl };
 
 /** schema.org Person for Home. Social links are added once they are real URLs. */
 export function personJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: site.name,
+    name: site.fullName,
     jobTitle: site.jobTitle,
     url: siteUrl,
     image: absoluteUrl(contactCard.avatar.src),

@@ -52,8 +52,8 @@ export const contactCard = {
     {
       icon: "website",
       label: "Website",
-      value: "samyakmanandhar.com.np",
-      href: "https://samyakmanandhar.com.np",
+      value: "www.samyakmanandhar.com.np",
+      href: "https://www.samyakmanandhar.com.np/",
       external: true,
       desktopOnly: true,
     },
@@ -159,6 +159,6 @@ export const contactEmails = {
       "Thanks for getting in touch. This is an automatic reply to let you know your message reached me.",
       "I read everything myself and usually reply within a day.",
     ],
-    signOff: "Samyak Manandhar\nhttps://samyakmanandhar.com.np",
+    signOff: "Samyak Manandhar\nhttps://www.samyakmanandhar.com.np/",
   },
 };

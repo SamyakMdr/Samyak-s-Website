@@ -6,5 +6,6 @@ export default function robots(): MetadataRoute.Robots {
     // /dev holds the internal UI kit.
     rules: { userAgent: "*", allow: "/", disallow: "/dev/" },
     sitemap: absoluteUrl("/sitemap.xml"),
+    host: absoluteUrl("/"),
   };
 }

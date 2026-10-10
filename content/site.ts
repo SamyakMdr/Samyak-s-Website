@@ -3,6 +3,7 @@ import type { Tone } from "./types";
 // Personal details are placeholders until confirmed. TODO: real data
 export const site = {
   name: "Samyak",
+  fullName: "Samyak Manandhar",
   brand: { user: "samyak", host: "dev" },
   role: "Junior Full-Stack Developer",
   jobTitle: "Full-Stack Developer",
@@ -258,7 +259,7 @@ export const footer = {
           label: "Mountain Helicopter Nepal website",
           href: "/projects/mountain-helicopter-website",
         },
-        { label: "Nepali voice inventory", href: "/projects/nepali-voice" },
+        { label: "BIKRI AI inventory system", href: "/projects/bikri-ai" },
         { label: "All projects", href: "/projects" },
       ],
     },
@@ -278,7 +279,7 @@ export const footer = {
 
 export const seo = {
   home: {
-    title: "Samyak Manandhar | Full-Stack Developer in Kathmandu, Nepal",
+    title: "Samyak Manandhar | Full-Stack Developer in Nepal",
     description:
       "Full-stack developer building fast web apps and dependable backends with TypeScript, NestJS and PostgreSQL. View projects or download my CV.",
   },
@@ -288,10 +289,20 @@ export const seo = {
       "Builds across web apps, mobile, AI and DevOps, with screenshots and the stack behind each one.",
   },
   rooms: {
+    "mountain-helicopter-website": {
+      title: "Mountain Helicopter Nepal Website | Samyak Manandhar",
+      description:
+        "A production helicopter tour and rescue website with a private CMS, built with Next.js, NestJS and PostgreSQL.",
+    },
     "mountain-helicopter-system": {
-      title: "Helicopter Booking System | Samyak",
+      title: "Helicopter Operations System | Samyak Manandhar",
       description:
         "A private booking and dispatch system for a helicopter operator, built with React, NestJS and PostgreSQL.",
+    },
+    "bikri-ai": {
+      title: "BIKRI AI Inventory Management System | Samyak Manandhar",
+      description:
+        "An AI-powered inventory app with Nepali voice input, product tracking and analytics, built with React Native, FastAPI and PostgreSQL.",
     },
   } as Record<string, { title: string; description: string }>,
   ogImage: "/og/og-default.png",

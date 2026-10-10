@@ -7,10 +7,10 @@ descriptions. Wording here is a suggestion; final copy is the owner's.
 
 | Route | `<title>` | Meta description (≤ ~155 chars) |
 |---|---|---|
-| `/` | Samyak \| Full-Stack Developer in Kathmandu, Nepal | Full-stack developer building fast web apps and dependable backends with TypeScript, NestJS and PostgreSQL. View projects or download my CV. |
+| `/` | Samyak Manandhar \| Full-Stack Developer in Nepal | Full-stack developer building fast web apps and dependable backends with TypeScript, NestJS and PostgreSQL. View projects or download my CV. |
 | `/projects` | Projects by Samyak \| Web Apps, APIs and DevOps | Twelve builds across web apps, APIs, DevOps and interface design, with screenshots and the stack behind each one. |
-| `/projects/heli-booking` | Helicopter Booking System \| Samyak | A private booking and dispatch system for a helicopter operator, built with React, NestJS and PostgreSQL. |
-| `/projects/[slug]` | `<Project title> \| Samyak` | Project summary |
+| `/projects/mountain-helicopter-system` | Helicopter Operations System \| Samyak Manandhar | A private booking and dispatch system for a helicopter operator, built with React, NestJS and PostgreSQL. |
+| `/projects/[slug]` | `<Project title> \| Samyak Manandhar` | Project summary |
 
 Use the Next.js Metadata API (`export const metadata` / `generateMetadata`). Add
 `openGraph` + `twitter` with `og-default.png` (1200 × 630) and per-project cover images.
@@ -23,9 +23,13 @@ Use the Next.js Metadata API (`export const metadata` / `generateMetadata`). Add
 - The terminal, branch tags and commit hashes are decoration, **not headings**.
 
 ## URLs
-`/`, `/projects`, `/projects/heli-booking`, `/projects/mhn-platform`, … — short, lowercase,
+`/`, `/projects`, `/projects/mountain-helicopter-website`, `/projects/bikri-ai`, … — short, lowercase,
 hyphenated. Terminal commands map to these same URLs, so every page is reachable by
 normal links (crawlable `<a href>`).
+
+The canonical origin is always `https://www.samyakmanandhar.com.np/`. Canonical
+metadata, Open Graph URLs, sitemap entries, structured data and first-party absolute
+links must all use this `www` host.
 
 ## Structured data (JSON-LD)
 - Home: `Person` — name, jobTitle "Full-Stack Developer", address (city, country),

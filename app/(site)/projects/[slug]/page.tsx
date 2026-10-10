@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: RoomPageProps): Promise<Metad
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  const copy = seo.rooms[slug] ?? { title: `${project.title} | ${site.name}`, description: project.summary };
+  const copy = seo.rooms[slug] ?? { title: `${project.title} | ${site.fullName}`, description: project.summary };
   return pageMetadata({
     ...copy,
     path: projectHref(project),
